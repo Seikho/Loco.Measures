@@ -1,0 +1,9 @@
+c:\users\seikho\documents\visual studio 2012\Projects\LocoDataExtractor\LocoDataExtractor\bin\Debug\LocoDataExtractor.exe.config
+c:\users\seikho\documents\visual studio 2012\Projects\LocoDataExtractor\LocoDataExtractor\bin\Debug\LocoDataExtractor.exe
+c:\users\seikho\documents\visual studio 2012\Projects\LocoDataExtractor\LocoDataExtractor\bin\Debug\LocoDataExtractor.pdb
+c:\users\seikho\documents\visual studio 2012\Projects\LocoDataExtractor\LocoDataExtractor\obj\Debug\LocoDataExtractor.csprojResolveAssemblyReference.cache
+c:\users\seikho\documents\visual studio 2012\Projects\LocoDataExtractor\LocoDataExtractor\obj\Debug\LocoDataExtractor.Properties.Resources.resources
+c:\users\seikho\documents\visual studio 2012\Projects\LocoDataExtractor\LocoDataExtractor\obj\Debug\LocoDataExtractor.csproj.GenerateResource.Cache
+c:\users\seikho\documents\visual studio 2012\Projects\LocoDataExtractor\LocoDataExtractor\obj\Debug\LocoDataExtractor.exe
+c:\users\seikho\documents\visual studio 2012\Projects\LocoDataExtractor\LocoDataExtractor\obj\Debug\LocoDataExtractor.pdb
+C:\Users\Seikho\documents\visual studio 2012\Projects\LocoDataExtractor\LocoDataExtractor\obj\Debug\LocoDataExtractor.LocoExtractor.resources

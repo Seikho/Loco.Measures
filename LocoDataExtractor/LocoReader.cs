@@ -93,45 +93,10 @@ namespace LocoDataExtractor
             MetricOutput.Add(metric.Output);
         }
 
-        public void ImmobileTime(int binSize = 1) // Default bin size: 1 minutes
-        {
-            Measurer = new ImmobileTime(Filename, binSize * (60 * SampleFreq), SampleFreq); 
-            Measurer.Extract();
-            MetricOutput[1] = Measurer.Output;
-        }
-
-        public void HorizontalMovement(int binSize = 5) // Default bin size: 5 minutes
-        {
-            Measurer = new HorizontalMovement(Filename, binSize * (60 * SampleFreq), SampleFreq); 
-            Measurer.Extract();
-            MetricOutput[0] = Measurer.Output;
-        }
-
-        public void VerticalMovement(int binSize = 5)
-        {
-            Measurer = new VerticalMovement(Filename, binSize * (60 * SampleFreq), SampleFreq);
-            Measurer.Extract();
-            MetricOutput[2] = Measurer.Output;
-        }
-
-        public void CenterVertical(int binSize = 5)
-        {
-            Measurer = new CenterVertical(Filename, binSize * (60 * SampleFreq), SampleFreq);
-            Measurer.Extract();
-            MetricOutput[4] = Measurer.Output;
-        }
-
-        public void VerticalTime(int binSize = 5)
-        {
-            Measurer = new VerticalTime(Filename, binSize * (60 * SampleFreq), SampleFreq);
-            Measurer.Extract();
-            MetricOutput[3] = Measurer.Output;
-        }
-
         public bool GenRData(string ratId, string sessNo, string drug)
         {
-            int allLen = MetricOutput[0].Count;
-            if (MetricOutput.Any(list => list.Count != allLen))
+            var allLen = MetricOutput[0].Count();
+            if (MetricOutput.Any(list => list.Count() != allLen))
             {
                 return false;
             }
@@ -140,7 +105,16 @@ namespace LocoDataExtractor
                 sw.WriteLine("Rat ID,Bin#,Drug,Session#,HM,IMT,VM,VT,CV");
                 for (var count = 0; count < allLen; count++)
                 {
-                    var newLine = ratId + "," + (count + 1) + "," + drug + "," + sessNo + "," + MetricOutput[0][count] + "," + MetricOutput[1][count] + "," + MetricOutput[2][count] + "," + MetricOutput[3][count] + "," + MetricOutput[4][count];
+                    var newLine = String.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}", 
+                        ratId,
+                        count+1,
+                        drug,
+                        sessNo,
+                        MetricOutput[0].ElementAt(count),
+                        MetricOutput[1].ElementAt(count),
+                        MetricOutput[2].ElementAt(count),
+                        MetricOutput[3].ElementAt(count),
+                        MetricOutput[4].ElementAt(count));
                     sw.WriteLine(newLine);
                 }
             }

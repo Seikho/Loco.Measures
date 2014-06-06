@@ -2,20 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace LocoDataExtractor
+namespace LocoDataExtractor.Metrics
 {
-    public abstract class LocoMeasurer
+    public abstract class Metric
     {
         public int BinSize;
         public int Counter;
-        //public int StartMin;
-        //public int StartSec;
         public int MinCount;
         public int BinCount;
         public string Pred { get; set; } // Includes rearing value
-        public string PredNR; // Does not inclue rearing value
+        public string PredNoRear; // Does not inclue rearing value
         public string Succ; // Includes rearing value
-        public string SuccNR; // Does not inclue rearing value
+        public string SuccNoRear; // Does not inclue rearing value
         public string File;
         public int SampleFreq;
         public List<string> Contents;
@@ -26,37 +24,36 @@ namespace LocoDataExtractor
 
         public DateTime SampleTime(string input)
         {
-            string[] split = input.Split(' ');
+            var split = input.Split(' ');
             return Convert.ToDateTime(split[0] + " " + split[1]);
         }
 
         public string GetCoord(string input)
         {
-            string[] split = input.Split(' ');
-            string coord = split[split.Length - 1];
+            var split = input.Split(' ');
+            var coord = split[split.Length - 1];
             return coord;
         }
 
-        public string GetNRCoord(string input)
+        public string GetNonRearCoord(string input)
         {
-            string[] split = input.Split(' ');
-            string coord = split[split.Length - 1].Substring(0, 7);
+            var split = input.Split(' ');
+            var coord = split[split.Length - 1].Substring(0, 7);
             return coord;
         }
 
         public string NewFile(string extension)
         {
-            string path = Path.GetDirectoryName(File) + "\\";
-            string noext = Path.GetFileNameWithoutExtension(File);
-            int count = 1;
+            var path = Path.GetDirectoryName(File) + "\\";
+            var noext = Path.GetFileNameWithoutExtension(File);
+            var count = 1;
             while (System.IO.File.Exists(path + noext + "_" + count + "_" + extension + ".txt")) count++;
             return path + noext + "_" + count + "_" + extension + ".txt";
         }
 
         public bool BinChange()
         {
-            if (MinCount == BinSize) return true;
-            return false;
+            return MinCount == BinSize;
         }
 
         public void UpdateValues(string input)
@@ -68,9 +65,9 @@ namespace LocoDataExtractor
             MinCount++; // when it this figure reaches binSize * 60, new bin is expected.
             //this.st = sampleTime(input);
             Pred = Succ;
-            PredNR = SuccNR;
+            PredNoRear = SuccNoRear;
             Succ = GetCoord(input);
-            SuccNR = GetNRCoord(input);
+            SuccNoRear = GetNonRearCoord(input);
         }
 
         public void ReadFile()

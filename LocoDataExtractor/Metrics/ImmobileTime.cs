@@ -3,7 +3,7 @@ using System.IO;
 
 namespace LocoDataExtractor
 {
-    public class LocoIMT : LocoMeasurer // Immobile Time
+    public class LocoIMT : Metric // Immobile Time
     {
         public LocoIMT(string file, int binSize, int sampleFreq = 2) // default sampling frequency is 2/sec
         {
@@ -15,8 +15,8 @@ namespace LocoDataExtractor
             Counter = 0;
             Pred = "";
             Succ = "";
-            PredNR = "";
-            SuccNR = "";
+            PredNoRear = "";
+            SuccNoRear = "";
             BinCount = 1;
         }
 
@@ -31,8 +31,8 @@ namespace LocoDataExtractor
             foreach (string read in Contents)
             {
                 UpdateValues(read);
-                if (PredNR.Length == 0) PredNR = SuccNR; // bugfix: first reading will always count as IMT, not HM.
-                if (PredNR.Equals(SuccNR)) Counter++;
+                if (PredNoRear.Length == 0) PredNoRear = SuccNoRear; // bugfix: first reading will always count as IMT, not HM.
+                if (PredNoRear.Equals(SuccNoRear)) Counter++;
                 if (BinChange())
                 {
                     double div = Counter;

@@ -1,11 +1,11 @@
 ﻿using System.Globalization;
 using System.IO;
 
-namespace LocoDataExtractor
+namespace LocoDataExtractor.Metrics
 {
-    public class LocoVM : LocoMeasurer // Vertical movement
+    public class VerticalMovement : Metric // Vertical movement
     {
-        public LocoVM(string file, int binSize, int sampleFreq = 2) // Sampling frequency is 2/sec, but is changeable in the future.
+        public VerticalMovement(string file, int binSize, int sampleFreq = 2) // Sampling frequency is 2/sec, but is changeable in the future.
         {
             File = file;
             ReadFile();
@@ -15,8 +15,8 @@ namespace LocoDataExtractor
             Counter = 0;
             Pred = "";
             Succ = "";
-            PredNR = "";
-            SuccNR = "";
+            PredNoRear = "";
+            SuccNoRear = "";
             BinCount = 1;
         }
 
@@ -32,17 +32,15 @@ namespace LocoDataExtractor
             {
                 UpdateValues(read);
                 if (Pred.Length == 0) Pred = "00000000"; // Pred == null on first iteration
-                string predRear = Pred.Substring(Pred.Length - 1, 1);
-                string succRear = Succ.Substring(Succ.Length - 1, 1);
+                var predRear = Pred.Substring(Pred.Length - 1, 1);
+                var succRear = Succ.Substring(Succ.Length - 1, 1);
                 if ((succRear.Equals("1")) && (predRear.Equals("0"))) Counter++;
-                if (BinChange())
-                {
-                    Output.Add(Counter.ToString(CultureInfo.InvariantCulture));
-                    WriteLine(sw, Counter);
-                    BinCount++;
-                    Counter = 0;
-                    MinCount = 0;
-                }
+                if (!BinChange()) continue;
+                Output.Add(Counter.ToString(CultureInfo.InvariantCulture));
+                WriteLine(sw, Counter);
+                BinCount++;
+                Counter = 0;
+                MinCount = 0;
             }
             sw.Dispose();
         }

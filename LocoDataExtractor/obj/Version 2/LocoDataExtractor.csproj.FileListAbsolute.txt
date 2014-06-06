@@ -2,3 +2,10 @@ C:\Users\Carl\SkyDrive\Documents\Ange\LocoTools\Source\LocoDataExtractor\LocoDat
 C:\Users\Carl\SkyDrive\Documents\Ange\LocoTools\Source\LocoDataExtractor\LocoDataExtractor\obj\Version 2\LocoDataExtractor.LocoExtractor.resources
 C:\Users\Carl\SkyDrive\Documents\Ange\LocoTools\Source\LocoDataExtractor\LocoDataExtractor\obj\Version 2\LocoDataExtractor.csproj.GenerateResource.Cache
 C:\Users\c.winkler.ASTHM\SkyDrive\Documents\Ange\LocoTools\Source\LocoDataExtractor\LocoDataExtractor\bin\Version 2\LocoDataExtractor.exe.config
+C:\Projects\LocoDataExtractor\LocoDataExtractor\bin\Version 2\LocoDataExtractor.exe.config
+C:\Projects\LocoDataExtractor\LocoDataExtractor\bin\Version 2\LocoDataExtractor.exe
+C:\Projects\LocoDataExtractor\LocoDataExtractor\obj\Version 2\LocoDataExtractor.csprojResolveAssemblyReference.cache
+C:\Projects\LocoDataExtractor\LocoDataExtractor\obj\Version 2\LocoDataExtractor.LocoExtractor.resources
+C:\Projects\LocoDataExtractor\LocoDataExtractor\obj\Version 2\LocoDataExtractor.Properties.Resources.resources
+C:\Projects\LocoDataExtractor\LocoDataExtractor\obj\Version 2\LocoDataExtractor.csproj.GenerateResource.Cache
+C:\Projects\LocoDataExtractor\LocoDataExtractor\obj\Version 2\LocoDataExtractor.exe

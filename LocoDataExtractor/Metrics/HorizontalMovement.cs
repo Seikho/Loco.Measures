@@ -1,11 +1,11 @@
 ﻿using System.Globalization;
 using System.IO;
 
-namespace LocoDataExtractor
+namespace LocoDataExtractor.Metrics
 {
-    public class LocoHM : LocoMeasurer // Horizontal movement
+    public class HorizontalMovement : Metric // Horizontal movement
     {
-        public LocoHM(string file, int binSize, int sampleFreq = 2) // Sampling frequency is 2/sec, but is changeable in the future.
+        public HorizontalMovement(string file, int binSize, int sampleFreq = 2) // Sampling frequency is 2/sec, but is changeable in the future.
         {
             File = file;
             ReadFile();
@@ -15,8 +15,8 @@ namespace LocoDataExtractor
             Counter = 0;
             Pred = "";
             Succ = "";
-            PredNR = "";
-            SuccNR = "";
+            PredNoRear = "";
+            SuccNoRear = "";
             BinCount = 1;
         }
 
@@ -31,8 +31,8 @@ namespace LocoDataExtractor
             foreach (string read in Contents)
             {
                 UpdateValues(read);
-                if (PredNR.Length == 0) PredNR = SuccNR; // bugfix: first reading will always count as IMT, not HM.
-                if (!PredNR.Equals(SuccNR)) Counter++;
+                if (PredNoRear.Length == 0) PredNoRear = SuccNoRear; // bugfix: first reading will always count as IMT, not HM.
+                if (!PredNoRear.Equals(SuccNoRear)) Counter++;
                 if (BinChange())
                 {
                     Output.Add(Counter.ToString(CultureInfo.InvariantCulture));

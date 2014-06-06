@@ -8,10 +8,10 @@ namespace LocoDataExtractor
     public class LocoReader
     {
         public string Filename = "";
-        public LocoMeasurer LM;
+        public LocoMeasurer Measurer;
         protected int SampleFreq = 1; // Samples per second
         public string OutputFile = "";
-        protected List<string>[] ConstructOP = new List<string>[5];
+        protected List<string>[] MetricOutput = new List<string>[5];
         public LocoReader(string file, int sampleFreq = 1)
         {
             SampleFreq = sampleFreq;
@@ -79,43 +79,43 @@ namespace LocoDataExtractor
 
         public void ImmobileTime(int binSize = 1) // Default bin size: 1 minutes
         {
-            LM = new LocoIMT(Filename, binSize * (60 * SampleFreq), SampleFreq); 
-            LM.Extract();
-            ConstructOP[1] = LM.Output;
+            Measurer = new LocoIMT(Filename, binSize * (60 * SampleFreq), SampleFreq); 
+            Measurer.Extract();
+            MetricOutput[1] = Measurer.Output;
         }
 
         public void HorizontalMovement(int binSize = 5) // Default bin size: 5 minutes
         {
-            LM = new LocoHM(Filename, binSize * (60 * SampleFreq), SampleFreq); 
-            LM.Extract();
-            ConstructOP[0] = LM.Output;
+            Measurer = new LocoHM(Filename, binSize * (60 * SampleFreq), SampleFreq); 
+            Measurer.Extract();
+            MetricOutput[0] = Measurer.Output;
         }
 
         public void VerticalMovement(int binSize = 5)
         {
-            LM = new LocoVM(Filename, binSize * (60 * SampleFreq), SampleFreq);
-            LM.Extract();
-            ConstructOP[2] = LM.Output;
+            Measurer = new LocoVM(Filename, binSize * (60 * SampleFreq), SampleFreq);
+            Measurer.Extract();
+            MetricOutput[2] = Measurer.Output;
         }
 
         public void CenterVertical(int binSize = 5)
         {
-            LM = new LocoCV(Filename, binSize * (60 * SampleFreq), SampleFreq);
-            LM.Extract();
-            ConstructOP[4] = LM.Output;
+            Measurer = new LocoCV(Filename, binSize * (60 * SampleFreq), SampleFreq);
+            Measurer.Extract();
+            MetricOutput[4] = Measurer.Output;
         }
 
         public void VerticalTime(int binSize = 5)
         {
-            LM = new LocoVT(Filename, binSize * (60 * SampleFreq), SampleFreq);
-            LM.Extract();
-            ConstructOP[3] = LM.Output;
+            Measurer = new LocoVT(Filename, binSize * (60 * SampleFreq), SampleFreq);
+            Measurer.Extract();
+            MetricOutput[3] = Measurer.Output;
         }
 
         public bool GenRData(string ratId, string sessNo, string drug)
         {
-            int allLen = ConstructOP[0].Count;
-            if (ConstructOP.Any(list => list.Count != allLen))
+            int allLen = MetricOutput[0].Count;
+            if (MetricOutput.Any(list => list.Count != allLen))
             {
                 return false;
             }
@@ -124,7 +124,7 @@ namespace LocoDataExtractor
                 sw.WriteLine("Rat ID,Bin#,Drug,Session#,HM,IMT,VM,VT,CV");
                 for (int count = 0; count < allLen; count++)
                 {
-                    string newLine = ratId + "," + (count + 1) + "," + drug + "," + sessNo + "," + ConstructOP[0][count] + "," + ConstructOP[1][count] + "," + ConstructOP[2][count] + "," + ConstructOP[3][count] + "," + ConstructOP[4][count];
+                    string newLine = ratId + "," + (count + 1) + "," + drug + "," + sessNo + "," + MetricOutput[0][count] + "," + MetricOutput[1][count] + "," + MetricOutput[2][count] + "," + MetricOutput[3][count] + "," + MetricOutput[4][count];
                     sw.WriteLine(newLine);
                 }
             }

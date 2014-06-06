@@ -75,15 +75,15 @@ namespace LocoDataExtractor
                 var lr = new LocoReader(lrName);
                 AddText("Save location: " + Path.GetDirectoryName(lrName));
                 lr.ImmobileTime(bins[0]);
-                AddText("'Immobile Time' saved to: " + Path.GetFileName(lr.LM.OutputFile));
+                AddText("'Immobile Time' saved to: " + Path.GetFileName(lr.Measurer.OutputFile));
                 lr.HorizontalMovement(bins[2]);
-                AddText("'Horizontal Movement' saved to: " + Path.GetFileName(lr.LM.OutputFile));
+                AddText("'Horizontal Movement' saved to: " + Path.GetFileName(lr.Measurer.OutputFile));
                 lr.VerticalMovement(bins[1]);
-                AddText("'Vertical Movement' saved to: " + Path.GetFileName(lr.LM.OutputFile));
+                AddText("'Vertical Movement' saved to: " + Path.GetFileName(lr.Measurer.OutputFile));
                 lr.CenterVertical(bins[4]);
-                AddText("'Central-Vertical Movement' saved to: " + Path.GetFileName(lr.LM.OutputFile));
+                AddText("'Central-Vertical Movement' saved to: " + Path.GetFileName(lr.Measurer.OutputFile));
                 lr.VerticalTime(bins[3]);
-                AddText("'Vertical Time' saved to: " + Path.GetFileName(lr.LM.OutputFile));
+                AddText("'Vertical Time' saved to: " + Path.GetFileName(lr.Measurer.OutputFile));
                 if (settingsDrug.Text.Length > 0 && settingsDrug.Text.Length > 0 && settingsRatID.Text.Length > 0)
                 {
                     if (lr.GenRData(settingsRatID.Text, settingSessNo.Text, settingsDrug.Text))

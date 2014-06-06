@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using LocoDataExtractor.Metrics;
+using LocoDataExtractor.Processors;
 
 namespace LocoDataExtractor
 {
@@ -24,59 +25,11 @@ namespace LocoDataExtractor
         public string GenerateFixedFile(bool delete = true)
         {
             var tempName = NewFile((delete?"Temp":"Fixed"));
-            var readFirst = false;
-            var pred = new DateTime();
-            var succ = new DateTime();
-            var predByte = ""; // previous sample byte
-            using (var sw = new StreamWriter(tempName))
-            {
-                using (var sr = new StreamReader(Filename))
-                {
-                    string line;
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        if (line.Length < 5) continue;
-                        var split = line.Split(' ');
-                        DateTime curr; // current sample time
-                        if (!readFirst) // run once.. first time reading a line, generate our initial values
-                        {
-                            readFirst = true;
-                            predByte = split[4];
-                            curr = GetTime(line);
-                            pred = curr.AddSeconds(-1);
-                            succ = curr;
-                        }
-                        else
-                        {
-                            curr = GetTime(line);
-                        }
-                        if (pred != curr)
-                        {
-                            if (succ != curr) // we're missing a second or two. fill in the gap(s).
-                            {
-                                while (succ != curr)
-                                {
-                                    sw.WriteLine("{0} {1} {2} {3}", succ.ToShortDateString(), succ.ToLongTimeString(), split[3], predByte);
-                                    succ = succ.AddSeconds(1);
-                                }
-                            }
-                            // we do this regardless.
-                            succ = curr.AddSeconds(1);
-                            pred = curr;
-                            predByte = split[4];
-                            sw.WriteLine(line);                            
-                        }
-                    }
-                }
-            }
+            new BlankFiller(Filename, tempName).Process();
             return tempName;
         }
 
-        private DateTime GetTime(string time)
-        {
-            var split = time.Split(' ');
-            return Convert.ToDateTime(split[0] + " " + split[1] + " " + split[2]);
-        }
+        
 
         public void GenerateMetrics(int binSize = 1)
         {

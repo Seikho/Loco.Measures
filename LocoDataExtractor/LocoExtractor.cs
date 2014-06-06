@@ -3,7 +3,6 @@ using System.Globalization;
 using System.IO;
 using System.ComponentModel;
 using System.Windows.Forms;
-using LocoDataExtractor.Metrics;
 
 namespace LocoDataExtractor
 {
@@ -53,14 +52,18 @@ namespace LocoDataExtractor
                 AddText("ERROR: 'Sample Frequency' is invalid (less than or equal to zero). Please fix and try again.");
                 return;
             }
+            if (ChosenFile.Length == 0)
+            {
+                AddText("Please select a file from the Selected File(s) list box.");
+                return;
+            }
+            GetMetrics(bin);
+        }
+
+        private void GetMetrics(int bin)
+        {
             try
             {
-                if (ChosenFile.Length == 0)
-                {
-                    AddText("Please select a file from the Selected File(s) list box.");
-                    return;
-                }
-
                 var lrGen = new LocoReader(FilePath + "\\" + ChosenFile, Frequency);
                 var lrName = lrGen.GenerateFixedFile();
                 var lr = new LocoReader(lrName);

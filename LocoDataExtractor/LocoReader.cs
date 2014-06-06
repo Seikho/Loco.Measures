@@ -29,8 +29,6 @@ namespace LocoDataExtractor
             return tempName;
         }
 
-        
-
         public void GenerateMetrics(int binSize = 1)
         {
             GenerateMetric(new HorizontalMovement(Filename, binSize * (60 * SampleFreq), SampleFreq), binSize);

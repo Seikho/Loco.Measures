@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions.cs" />
     <Compile Include="Metrics\CenterVertical.cs" />
     <Compile Include="Metrics\HorizontalMovement.cs" />
     <Compile Include="Metrics\ImmobileTime.cs" />

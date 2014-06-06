@@ -12,7 +12,7 @@ namespace LocoDataExtractor
         public Metric Measurer;
         protected int SampleFreq = 1; // Samples per second
         public string OutputFile = "";
-        protected List<string>[] MetricOutput = new List<string>[5];
+        protected List<IEnumerable<string>> MetricOutput = new List<IEnumerable<string>>();
         public LocoReader(string file, int sampleFreq = 1)
         {
             SampleFreq = sampleFreq;
@@ -78,6 +78,21 @@ namespace LocoDataExtractor
             return Convert.ToDateTime(split[0] + " " + split[1] + " " + split[2]);
         }
 
+        public void GenerateMetrics(int binSize = 1)
+        {
+            GenerateMetric(new HorizontalMovement(Filename, binSize * (60 * SampleFreq), SampleFreq), binSize);
+            GenerateMetric(new ImmobileTime(Filename, binSize * (60 * SampleFreq), SampleFreq), binSize);
+            GenerateMetric(new VerticalMovement(Filename, binSize * (60 * SampleFreq), SampleFreq), binSize);
+            GenerateMetric(new VerticalTime(Filename, binSize * (60 * SampleFreq), SampleFreq), binSize);
+            GenerateMetric(new CenterVertical(Filename, binSize * (60 * SampleFreq), SampleFreq), binSize);
+        }
+
+        public void GenerateMetric(Metric metric, int binSize)
+        {
+            metric.Extract();
+            MetricOutput.Add(metric.Output);
+        }
+
         public void ImmobileTime(int binSize = 1) // Default bin size: 1 minutes
         {
             Measurer = new ImmobileTime(Filename, binSize * (60 * SampleFreq), SampleFreq); 
@@ -123,9 +138,9 @@ namespace LocoDataExtractor
             using (var sw = new StreamWriter(OutputFile))
             {
                 sw.WriteLine("Rat ID,Bin#,Drug,Session#,HM,IMT,VM,VT,CV");
-                for (int count = 0; count < allLen; count++)
+                for (var count = 0; count < allLen; count++)
                 {
-                    string newLine = ratId + "," + (count + 1) + "," + drug + "," + sessNo + "," + MetricOutput[0][count] + "," + MetricOutput[1][count] + "," + MetricOutput[2][count] + "," + MetricOutput[3][count] + "," + MetricOutput[4][count];
+                    var newLine = ratId + "," + (count + 1) + "," + drug + "," + sessNo + "," + MetricOutput[0][count] + "," + MetricOutput[1][count] + "," + MetricOutput[2][count] + "," + MetricOutput[3][count] + "," + MetricOutput[4][count];
                     sw.WriteLine(newLine);
                 }
             }

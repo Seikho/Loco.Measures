@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.ComponentModel;
 using System.Windows.Forms;
+using LocoDataExtractor.Metrics;
 
 namespace LocoDataExtractor
 {
@@ -41,25 +41,20 @@ namespace LocoDataExtractor
         {
             int bin;
             Int32.TryParse(BinSize.Text, out bin);
-            var bins = new[] { bin, bin, bin, bin, bin }; // leaving this legacy code in case decision is made to have unique bin sizes.
             Frequency = 0;
             Int32.TryParse(SampleFrequency.Text, out Frequency);
-            foreach (var binsize in bins)
+            if (bin <= 0)
             {
-                if (binsize <= 0)
-                {
-                    AddText("ERROR: One of the supplied 'Bin Sizes' is invalid (less than or equal to zero). Please fix and try again.");
-                    return;
-                }
-                if (Frequency <= 0)
-                {
-                    AddText("ERROR: 'Sample Frequency' is invalid (less than or equal to zero). Please fix and try again.");
-                    return;
-                }
+                AddText("ERROR: One of the supplied 'Bin Sizes' is invalid (less than or equal to zero). Please fix and try again.");
+                return;
+            }
+            if (Frequency <= 0)
+            {
+                AddText("ERROR: 'Sample Frequency' is invalid (less than or equal to zero). Please fix and try again.");
+                return;
             }
             try
             {
-                //foreach (var lr in from string line in fileSelect.FileNames select new LocoReader(line, Frequency))
                 if (ChosenFile.Length == 0)
                 {
                     AddText("Please select a file from the Selected File(s) list box.");
@@ -69,28 +64,16 @@ namespace LocoDataExtractor
                 var lrGen = new LocoReader(FilePath + "\\" + ChosenFile, Frequency);
                 var lrName = lrGen.GenerateFixedFile();
                 var lr = new LocoReader(lrName);
+                lr.GenerateMetrics(bin);
                 AddText("Save location: " + Path.GetDirectoryName(lrName));
-                lr.ImmobileTime(bins[0]);
-                AddText("'Immobile Time' saved to: " + Path.GetFileName(lr.Measurer.OutputFile));
-                lr.HorizontalMovement(bins[2]);
-                AddText("'Horizontal Movement' saved to: " + Path.GetFileName(lr.Measurer.OutputFile));
-                lr.VerticalMovement(bins[1]);
-                AddText("'Vertical Movement' saved to: " + Path.GetFileName(lr.Measurer.OutputFile));
-                lr.CenterVertical(bins[4]);
-                AddText("'Central-Vertical Movement' saved to: " + Path.GetFileName(lr.Measurer.OutputFile));
-                lr.VerticalTime(bins[3]);
-                AddText("'Vertical Time' saved to: " + Path.GetFileName(lr.Measurer.OutputFile));
                 if (settingsDrug.Text.Length > 0 && settingsDrug.Text.Length > 0 && settingsRatID.Text.Length > 0)
                 {
-                    if (lr.GenRData(settingsRatID.Text, settingSessNo.Text, settingsDrug.Text))
-                        AddText("'R Data' has been saved to: " + Path.GetFileName(lr.OutputFile));
-                    else
-                        AddText(
-                            "'R Data' has not been generated: The number of bins is not equal across all constructs.");
+                    lr.GenRData(settingsRatID.Text, settingSessNo.Text, settingsDrug.Text);
+                    AddText("'R Data' has been saved to: " + Path.GetFileName(lr.OutputFile));
                 }
+                else AddText("'R Data' has not been generated due to missing settings");
                 AddText("Data has been successfully extracted.");
                 File.Delete(lrName);
-
             }
             catch (Exception err)
             {
@@ -109,7 +92,7 @@ namespace LocoDataExtractor
 
         private void btRepair_Click(object sender, EventArgs e)
         {
-            foreach (string line in fileSelect.FileNames)
+            foreach (var line in fileSelect.FileNames)
             {
                 var lr = new LocoReader(line, Frequency);
                 lr.GenerateFixedFile(false);

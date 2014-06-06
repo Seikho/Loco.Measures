@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using LocoDataExtractor.Metrics;
 
 namespace LocoDataExtractor
 {
     public class LocoReader
     {
         public string Filename = "";
-        public LocoMeasurer Measurer;
+        public Metric Measurer;
         protected int SampleFreq = 1; // Samples per second
         public string OutputFile = "";
         protected List<string>[] MetricOutput = new List<string>[5];
@@ -22,11 +23,11 @@ namespace LocoDataExtractor
 
         public string GenerateFixedFile(bool delete = true)
         {
-            string tempName = NewFile((delete?"Temp":"Fixed"));
-            bool readFirst = false;
+            var tempName = NewFile((delete?"Temp":"Fixed"));
+            var readFirst = false;
             var pred = new DateTime();
             var succ = new DateTime();
-            string predByte = ""; // previous sample byte
+            var predByte = ""; // previous sample byte
             using (var sw = new StreamWriter(tempName))
             {
                 using (var sr = new StreamReader(Filename))
@@ -79,35 +80,35 @@ namespace LocoDataExtractor
 
         public void ImmobileTime(int binSize = 1) // Default bin size: 1 minutes
         {
-            Measurer = new LocoIMT(Filename, binSize * (60 * SampleFreq), SampleFreq); 
+            Measurer = new ImmobileTime(Filename, binSize * (60 * SampleFreq), SampleFreq); 
             Measurer.Extract();
             MetricOutput[1] = Measurer.Output;
         }
 
         public void HorizontalMovement(int binSize = 5) // Default bin size: 5 minutes
         {
-            Measurer = new LocoHM(Filename, binSize * (60 * SampleFreq), SampleFreq); 
+            Measurer = new HorizontalMovement(Filename, binSize * (60 * SampleFreq), SampleFreq); 
             Measurer.Extract();
             MetricOutput[0] = Measurer.Output;
         }
 
         public void VerticalMovement(int binSize = 5)
         {
-            Measurer = new LocoVM(Filename, binSize * (60 * SampleFreq), SampleFreq);
+            Measurer = new VerticalMovement(Filename, binSize * (60 * SampleFreq), SampleFreq);
             Measurer.Extract();
             MetricOutput[2] = Measurer.Output;
         }
 
         public void CenterVertical(int binSize = 5)
         {
-            Measurer = new LocoCV(Filename, binSize * (60 * SampleFreq), SampleFreq);
+            Measurer = new CenterVertical(Filename, binSize * (60 * SampleFreq), SampleFreq);
             Measurer.Extract();
             MetricOutput[4] = Measurer.Output;
         }
 
         public void VerticalTime(int binSize = 5)
         {
-            Measurer = new LocoVT(Filename, binSize * (60 * SampleFreq), SampleFreq);
+            Measurer = new VerticalTime(Filename, binSize * (60 * SampleFreq), SampleFreq);
             Measurer.Extract();
             MetricOutput[3] = Measurer.Output;
         }

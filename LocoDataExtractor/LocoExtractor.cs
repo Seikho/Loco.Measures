@@ -1,12 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace LocoDataExtractor
@@ -14,15 +10,15 @@ namespace LocoDataExtractor
     public partial class LocoExtractor : Form
     {
 
-        int _sampleFreq = 1;
-        private string FilePath = "";
-        private string ChosenFile = "";
+        public int Frequency = 1;
+        public string FilePath = "";
+        public string ChosenFile = "";
         public LocoExtractor()
         {
             InitializeComponent();
             fileSelect.InitialDirectory = "C:\\Files\\EncData\\";
-            tbBinSize.Text = "10";
-            settingSF.Text = _sampleFreq.ToString();
+            BinSize.Text = @"10";
+            SampleFrequency.Text = Frequency.ToString(CultureInfo.InvariantCulture);
         }
 
         private void btSelect_Click(object sender, EventArgs e)
@@ -35,27 +31,27 @@ namespace LocoDataExtractor
         {
             foreach (var file in fileSelect.FileNames)
             {
-                if (FilePath.Length == 0) FilePath = Path.GetDirectoryName(file);
-                lbFiles.Items.Add(Path.GetFileName(file));
+                if (String.IsNullOrEmpty(FilePath)) FilePath = Path.GetDirectoryName(file);
+                if (!String.IsNullOrEmpty(file)) FileList.Items.Add(Path.GetFileName(file));
             }
             
         }
 
         private void btExtract_Click(object sender, EventArgs e)
         {
-            var bin = 0;
-            Int32.TryParse(tbBinSize.Text, out bin);
-            var bins = new int[] { bin, bin, bin, bin, bin }; // leaving this legacy code in case decision is made to have unique bin sizes.
-            _sampleFreq = 0;
-            Int32.TryParse(settingSF.Text, out _sampleFreq);
-            foreach (int binsize in bins)
+            int bin;
+            Int32.TryParse(BinSize.Text, out bin);
+            var bins = new[] { bin, bin, bin, bin, bin }; // leaving this legacy code in case decision is made to have unique bin sizes.
+            Frequency = 0;
+            Int32.TryParse(SampleFrequency.Text, out Frequency);
+            foreach (var binsize in bins)
             {
                 if (binsize <= 0)
                 {
                     AddText("ERROR: One of the supplied 'Bin Sizes' is invalid (less than or equal to zero). Please fix and try again.");
                     return;
                 }
-                if (_sampleFreq <= 0)
+                if (Frequency <= 0)
                 {
                     AddText("ERROR: 'Sample Frequency' is invalid (less than or equal to zero). Please fix and try again.");
                     return;
@@ -63,15 +59,15 @@ namespace LocoDataExtractor
             }
             try
             {
-                //foreach (var lr in from string line in fileSelect.FileNames select new LocoReader(line, _sampleFreq))
+                //foreach (var lr in from string line in fileSelect.FileNames select new LocoReader(line, Frequency))
                 if (ChosenFile.Length == 0)
                 {
                     AddText("Please select a file from the Selected File(s) list box.");
                     return;
                 }
 
-                var lrGen = new LocoReader(FilePath + "\\" + ChosenFile, _sampleFreq);
-                string lrName = lrGen.GenerateFixedFile();
+                var lrGen = new LocoReader(FilePath + "\\" + ChosenFile, Frequency);
+                var lrName = lrGen.GenerateFixedFile();
                 var lr = new LocoReader(lrName);
                 AddText("Save location: " + Path.GetDirectoryName(lrName));
                 lr.ImmobileTime(bins[0]);
@@ -115,14 +111,14 @@ namespace LocoDataExtractor
         {
             foreach (string line in fileSelect.FileNames)
             {
-                var lr = new LocoReader(line, _sampleFreq);
+                var lr = new LocoReader(line, Frequency);
                 lr.GenerateFixedFile(false);
             }
         }
 
         private void lbFiles_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ChosenFile = lbFiles.Text;
+            ChosenFile = FileList.Text;
             textBox1.Text = ChosenFile;
         }
     }

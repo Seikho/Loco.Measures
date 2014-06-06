@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LocoDataExtractor.Processors
+﻿namespace LocoDataExtractor.Processors
 {
-    public class Processor
+    public abstract class Processor
     {
         public string FileLocation { get; set; }
+        protected Processor(string fileLocation)
+        {
+            FileLocation = fileLocation;
+        }
+
+        public abstract void Process();
     }
 }

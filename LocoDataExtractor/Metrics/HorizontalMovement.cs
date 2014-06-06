@@ -28,21 +28,18 @@ namespace LocoDataExtractor.Metrics
             sw.WriteLine("Horizontal Movement");
             sw.WriteLine("Bin#\tHM(breaks)\tBin timespan\t(HM = (MovementCount per Bin), Sampling Frequency/sec: " + SampleFreq + ", Bin size: " + BinSize + " samples");
 
-            foreach (string read in Contents)
+            foreach (var read in Contents)
             {
                 UpdateValues(read);
                 if (PredNoRear.Length == 0) PredNoRear = SuccNoRear; // bugfix: first reading will always count as IMT, not HM.
                 if (!PredNoRear.Equals(SuccNoRear)) Counter++;
-                if (BinChange())
-                {
-                    Output.Add(Counter.ToString(CultureInfo.InvariantCulture));
-                    WriteLine(sw, Counter);
-                    BinCount++;
-                    Counter = 0;
-                    MinCount = 0;
-                }
+                if (!BinChange()) continue;
+                Output.Add(Counter.ToString(CultureInfo.InvariantCulture));
+                WriteLine(sw, Counter);
+                BinCount++;
+                Counter = 0;
+                MinCount = 0;
             }
-            //WriteLine(sw, counter);
             sw.Dispose();
         }
     }

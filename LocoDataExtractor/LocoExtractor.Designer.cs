@@ -34,8 +34,8 @@
             this.console = new System.Windows.Forms.RichTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.lbFiles = new System.Windows.Forms.ListBox();
-            this.tbBinSize = new System.Windows.Forms.TextBox();
+            this.FileList = new System.Windows.Forms.ListBox();
+            this.BinSize = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -46,7 +46,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.settingSF = new System.Windows.Forms.TextBox();
+            this.SampleFrequency = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.btRepair = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -97,8 +97,8 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.btRepair);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.lbFiles);
-            this.groupBox1.Controls.Add(this.tbBinSize);
+            this.groupBox1.Controls.Add(this.FileList);
+            this.groupBox1.Controls.Add(this.BinSize);
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.btSelect);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
@@ -117,21 +117,21 @@
             this.label1.TabIndex = 14;
             this.label1.Text = "Selected Files:";
             // 
-            // lbFiles
+            // FileList
             // 
-            this.lbFiles.FormattingEnabled = true;
-            this.lbFiles.Location = new System.Drawing.Point(249, 16);
-            this.lbFiles.Name = "lbFiles";
-            this.lbFiles.Size = new System.Drawing.Size(233, 95);
-            this.lbFiles.TabIndex = 13;
-            this.lbFiles.SelectedIndexChanged += new System.EventHandler(this.lbFiles_SelectedIndexChanged);
+            this.FileList.FormattingEnabled = true;
+            this.FileList.Location = new System.Drawing.Point(249, 16);
+            this.FileList.Name = "FileList";
+            this.FileList.Size = new System.Drawing.Size(233, 95);
+            this.FileList.TabIndex = 13;
+            this.FileList.SelectedIndexChanged += new System.EventHandler(this.lbFiles_SelectedIndexChanged);
             // 
-            // tbBinSize
+            // BinSize
             // 
-            this.tbBinSize.Location = new System.Drawing.Point(155, 119);
-            this.tbBinSize.Name = "tbBinSize";
-            this.tbBinSize.Size = new System.Drawing.Size(59, 20);
-            this.tbBinSize.TabIndex = 12;
+            this.BinSize.Location = new System.Drawing.Point(155, 119);
+            this.BinSize.Name = "BinSize";
+            this.BinSize.Size = new System.Drawing.Size(59, 20);
+            this.BinSize.TabIndex = 12;
             // 
             // label13
             // 
@@ -155,7 +155,7 @@
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.label8);
-            this.groupBox2.Controls.Add(this.settingSF);
+            this.groupBox2.Controls.Add(this.SampleFrequency);
             this.groupBox2.Location = new System.Drawing.Point(12, 164);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(490, 124);
@@ -230,12 +230,12 @@
             this.label8.TabIndex = 1;
             this.label8.Text = "Sampling Frequency";
             // 
-            // settingSF
+            // SampleFrequency
             // 
-            this.settingSF.Location = new System.Drawing.Point(10, 39);
-            this.settingSF.Name = "settingSF";
-            this.settingSF.Size = new System.Drawing.Size(100, 20);
-            this.settingSF.TabIndex = 0;
+            this.SampleFrequency.Location = new System.Drawing.Point(10, 39);
+            this.SampleFrequency.Name = "SampleFrequency";
+            this.SampleFrequency.Size = new System.Drawing.Size(100, 20);
+            this.SampleFrequency.TabIndex = 0;
             // 
             // label7
             // 
@@ -313,7 +313,7 @@
         private System.Windows.Forms.RichTextBox console;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox settingSF;
+        private System.Windows.Forms.TextBox SampleFrequency;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox settingSessNo;
@@ -323,10 +323,10 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox tbBinSize;
+        private System.Windows.Forms.TextBox BinSize;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ListBox lbFiles;
+        private System.Windows.Forms.ListBox FileList;
         private System.Windows.Forms.Button btRepair;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;

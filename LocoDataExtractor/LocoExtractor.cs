@@ -8,13 +8,13 @@ namespace LocoDataExtractor
 {
     public partial class LocoExtractor : Form
     {
-
         public int Frequency = 1;
         public string FilePath = "";
         public string ChosenFile = "";
         public LocoExtractor()
         {
             InitializeComponent();
+            FileProcessor.SelectedIndex = 0;
             fileSelect.InitialDirectory = "C:\\Files\\EncData\\";
             BinSize.Text = @"10";
             SampleFrequency.Text = Frequency.ToString(CultureInfo.InvariantCulture);
@@ -65,7 +65,7 @@ namespace LocoDataExtractor
             try
             {
                 var lrGen = new LocoReader(FilePath + "\\" + ChosenFile, Frequency);
-                var lrName = lrGen.GenerateFixedFile();
+                var lrName = lrGen.GenerateFixedFile(FileProcessor.SelectedIndex);
                 var lr = new LocoReader(lrName);
                 lr.GenerateMetrics(bin);
                 AddText("Save location: " + Path.GetDirectoryName(lrName));
@@ -98,8 +98,10 @@ namespace LocoDataExtractor
             foreach (var line in fileSelect.FileNames)
             {
                 var lr = new LocoReader(line, Frequency);
-                lr.GenerateFixedFile(false);
+                lr.GenerateFixedFile(FileProcessor.SelectedIndex, false);
             }
+            AddText("All files have been repaired.");
+
         }
 
         private void lbFiles_SelectedIndexChanged(object sender, EventArgs e)

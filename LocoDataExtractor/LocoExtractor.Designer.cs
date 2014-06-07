@@ -33,11 +33,15 @@
             this.btExtract = new System.Windows.Forms.Button();
             this.console = new System.Windows.Forms.RichTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btRepair = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.FileList = new System.Windows.Forms.ListBox();
             this.BinSize = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.settingSessNo = new System.Windows.Forms.TextBox();
             this.settingsDrug = new System.Windows.Forms.TextBox();
@@ -48,10 +52,8 @@
             this.label8 = new System.Windows.Forms.Label();
             this.SampleFrequency = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.btRepair = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.FileProcessor = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -94,6 +96,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.FileProcessor);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.btRepair);
             this.groupBox1.Controls.Add(this.label1);
@@ -107,6 +111,25 @@
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Data Extraction Settings";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(274, 122);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(106, 13);
+            this.label2.TabIndex = 16;
+            this.label2.Text = "Generate Fixed Files:";
+            // 
+            // btRepair
+            // 
+            this.btRepair.Location = new System.Drawing.Point(392, 117);
+            this.btRepair.Name = "btRepair";
+            this.btRepair.Size = new System.Drawing.Size(92, 23);
+            this.btRepair.TabIndex = 15;
+            this.btRepair.Text = "Process Files";
+            this.btRepair.UseVisualStyleBackColor = true;
+            this.btRepair.Click += new System.EventHandler(this.btRepair_Click);
             // 
             // label1
             // 
@@ -162,6 +185,23 @@
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "File Info";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(14, 74);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(71, 13);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Selected File:";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Enabled = false;
+            this.textBox1.Location = new System.Drawing.Point(97, 71);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(241, 20);
+            this.textBox1.TabIndex = 9;
             // 
             // label12
             // 
@@ -246,41 +286,25 @@
             this.label7.TabIndex = 6;
             this.label7.Text = "Information:";
             // 
-            // btRepair
+            // FileProcessor
             // 
-            this.btRepair.Location = new System.Drawing.Point(392, 117);
-            this.btRepair.Name = "btRepair";
-            this.btRepair.Size = new System.Drawing.Size(92, 23);
-            this.btRepair.TabIndex = 15;
-            this.btRepair.Text = "Process Files";
-            this.btRepair.UseVisualStyleBackColor = true;
-            this.btRepair.Click += new System.EventHandler(this.btRepair_Click);
+            this.FileProcessor.FormattingEnabled = true;
+            this.FileProcessor.Items.AddRange(new object[] {
+            "Blank Fill Method",
+            "Blank Shift Method"});
+            this.FileProcessor.Location = new System.Drawing.Point(6, 43);
+            this.FileProcessor.Name = "FileProcessor";
+            this.FileProcessor.Size = new System.Drawing.Size(121, 21);
+            this.FileProcessor.TabIndex = 17;
             // 
-            // label2
+            // label4
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(274, 122);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(106, 13);
-            this.label2.TabIndex = 16;
-            this.label2.Text = "Generate Fixed Files:";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(97, 71);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(241, 20);
-            this.textBox1.TabIndex = 9;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(14, 74);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(71, 13);
-            this.label3.TabIndex = 10;
-            this.label3.Text = "Selected File:";
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 27);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(120, 13);
+            this.label4.TabIndex = 18;
+            this.label4.Text = "File Processing Method:";
             // 
             // LocoExtractor
             // 
@@ -331,6 +355,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox FileProcessor;
     }
 }
 

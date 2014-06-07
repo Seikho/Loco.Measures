@@ -22,10 +22,18 @@ namespace LocoDataExtractor
             OutputFile = NewFile("RData", true);
         }
 
-        public string GenerateFixedFile(bool delete = true)
+        public string GenerateFixedFile(int fileProcessor, bool delete = true)
         {
             var tempName = NewFile((delete?"Temp":"Fixed"));
-            new BlankFiller(Filename, tempName).Process();
+            switch (fileProcessor)
+            {
+                case 0:
+                    new BlankFiller(Filename, tempName).Process();
+                    break;
+                case 1:
+                    new BlankShift(Filename, tempName).Process();
+                    break;
+            }
             return tempName;
         }
 

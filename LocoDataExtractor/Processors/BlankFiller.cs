@@ -12,7 +12,6 @@
             if (Pred == ReadTime) return;
             // we're missing a second or two. fill in the gap(s).
             if (Succ != ReadTime) FillGapWithLastByte();
-            // we do this regardless.
             Succ = ReadTime.AddSeconds(1);
             Pred = ReadTime;
             PredByte = ReadByte;
@@ -23,8 +22,7 @@
         {
             while (Succ != ReadTime)
             {
-                Target.WriteLine("{0} {1} {2} {3}", Succ.ToShortDateString(), Succ.ToLongTimeString(), ReadEnclosure,
-                    PredByte);
+                WriteLine(Succ, PredByte);
                 Succ = Succ.AddSeconds(1);
             }
         }

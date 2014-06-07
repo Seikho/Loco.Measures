@@ -48,6 +48,11 @@ namespace LocoDataExtractor.Processors
             ReadByte = split[4];
         }
 
-        protected abstract void Execute();
+        protected void WriteLine(DateTime date, string bits)
+        {
+            Target.WriteLine("{0} {1} {2} {3}", date.ToShortDateString(), date.ToLongTimeString(), ReadEnclosure, bits);
+        }
+
+    protected abstract void Execute();
     }
 }

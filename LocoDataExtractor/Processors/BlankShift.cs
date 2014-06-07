@@ -16,17 +16,26 @@ namespace LocoDataExtractor.Processors
 
         protected override void Execute()
         {
-            if (!ReadFirst) GetInitialValues();
-
+            if (!ReadFirst)
+            {
+                GetInitialValues();
+                return;
+            }
+            WriteLine(Curr, ReadByte);
+            SecondSamples++;
+            if (SecondSamples != 2) return;
+            SecondSamples = 0;
+            Curr = Curr.AddSeconds(1);
         }
 
         private void GetInitialValues()
         {
+            ReadFirst = true;
             PredByte = ReadByte;
             Curr = ReadTime;
             Pred = ReadTime;
             SecondSamples = 1;
-
+            WriteLine(Curr, ReadByte);
         }
     }
 }

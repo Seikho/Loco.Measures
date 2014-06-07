@@ -5,16 +5,18 @@ namespace LocoDataExtractor.Processors
 {
     public abstract class Processor
     {
-        public string FileLocation { get; set; }
-        public string NewFile { get; set; }
         protected StreamWriter Target { get; set; }
         protected StreamReader Original { get; set; }
+        protected DateTime Pred = new DateTime();
+        protected DateTime Succ = new DateTime();
+        protected DateTime Curr;
+        protected string PredByte = "";
+        protected bool ReadFirst = false;
+        protected string Line;
         protected Processor(string fileLocation, string newFile)
         {
-            FileLocation = fileLocation;
-            NewFile = newFile;
-            Target = new StreamWriter(NewFile);
-            Original = new StreamReader(FileLocation);
+            Target = new StreamWriter(newFile);
+            Original = new StreamReader(fileLocation);
         }
 
         protected DateTime GetTime(string time)
@@ -25,7 +27,10 @@ namespace LocoDataExtractor.Processors
 
         public void Process()
         {
-            Execute();
+            while ((Line = Original.ReadLine()) != null)
+            {
+                Execute();
+            }
             Target.Dispose();
             Original.Dispose();
         }

@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.IO;
 
 namespace LocoDataExtractor.Metrics
 {
@@ -7,29 +6,21 @@ namespace LocoDataExtractor.Metrics
     {
         public HorizontalMovement(string file, int binSize, int sampleFreq = 2) : base(file, binSize, sampleFreq)
         {
+            NewFile("HM");
+            Writer.WriteLine("Horizontal Movement");
+            Writer.WriteLine("Bin#\tHM(breaks)\tBin timespan\t(HM = (MovementCount per Bin), Sampling Frequency/sec: " + SampleFreq + ", Bin size: " + BinSize + " samples");
         }
 
-        public override void Extract()
+        public override void Execute()
         {
-            OutputFile = NewFile("HM");
-            var sw = new StreamWriter(OutputFile);
+            if (PredNoRear.Length == 0) PredNoRear = SuccNoRear; // bugfix: first reading will always count as IMT, not HM.
+            if (!PredNoRear.Equals(SuccNoRear)) Counter++;
+            if (!BinChange()) return;
+            Output.Add(Counter.ToString(CultureInfo.InvariantCulture));
+            WriteLine(Counter);
+            BinCount++;
             Counter = 0;
-            sw.WriteLine("Horizontal Movement");
-            sw.WriteLine("Bin#\tHM(breaks)\tBin timespan\t(HM = (MovementCount per Bin), Sampling Frequency/sec: " + SampleFreq + ", Bin size: " + BinSize + " samples");
-
-            foreach (var read in Contents)
-            {
-                UpdateValues(read);
-                if (PredNoRear.Length == 0) PredNoRear = SuccNoRear; // bugfix: first reading will always count as IMT, not HM.
-                if (!PredNoRear.Equals(SuccNoRear)) Counter++;
-                if (!BinChange()) continue;
-                Output.Add(Counter.ToString(CultureInfo.InvariantCulture));
-                WriteLine(sw, Counter);
-                BinCount++;
-                Counter = 0;
-                MinCount = 0;
-            }
-            sw.Dispose();
+            MinCount = 0;
         }
     }
 }

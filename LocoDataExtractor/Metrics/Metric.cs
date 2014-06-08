@@ -19,6 +19,7 @@ namespace LocoDataExtractor.Metrics
         public List<string> Contents;
         public List<string> Output = new List<string>();
         public string OutputFile;
+        public StreamWriter Writer;
 
         protected Metric(string file, int binSize, int sampleFreq = 2)
         {
@@ -35,7 +36,16 @@ namespace LocoDataExtractor.Metrics
             BinCount = 1;
         }
 
-        abstract public void Extract();
+        public void Process()
+        {
+            foreach (var read in Contents)
+            {
+                UpdateValues(read);
+                Execute();
+            }
+        }
+
+        abstract public void Execute();
 
         protected DateTime SampleTime(string input)
         {
@@ -57,13 +67,14 @@ namespace LocoDataExtractor.Metrics
             return coord;
         }
 
-        protected string NewFile(string extension)
+        protected void NewFile(string extension)
         {
             var path = Path.GetDirectoryName(File) + "\\";
             var noext = Path.GetFileNameWithoutExtension(File);
             var count = 1;
             while (System.IO.File.Exists(path + noext + "_" + count + "_" + extension + ".txt")) count++;
-            return path + noext + "_" + count + "_" + extension + ".txt";
+            OutputFile = path + noext + "_" + count + "_" + extension + ".txt";
+            Writer = new StreamWriter(OutputFile);
         }
 
         protected bool BinChange()
@@ -98,9 +109,9 @@ namespace LocoDataExtractor.Metrics
             }
         }
 
-        protected void WriteLine(StreamWriter sw, double val)
+        protected void WriteLine(double val)
         {
-            sw.WriteLine(BinCount + "\t" + val + "\t\t(Samples: " + MinCount + ")");
+            Writer.WriteLine(BinCount + "\t" + val + "\t\t(Samples: " + MinCount + ")");
         }
     }
 }

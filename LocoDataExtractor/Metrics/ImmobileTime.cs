@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.IO;
 
 namespace LocoDataExtractor.Metrics
 {
@@ -7,30 +6,23 @@ namespace LocoDataExtractor.Metrics
     {
         public ImmobileTime(string file, int binSize, int sampleFreq = 2) : base(file, binSize, sampleFreq)
         {
+            NewFile("IMT");
+            Writer.WriteLine("Immobile Time");
+            Writer.WriteLine("Bin#\tIMT(sec)\tBin timespan\t(IMT = (IdleReadings / SamplingTime), Sampling Frequency/sec: " + SampleFreq + ", Bin size: " + BinSize + " samples");
         }
 
-        public override void Extract()
+        public override void Execute()
         {
-            OutputFile = NewFile("IMT");
-            var sw = new StreamWriter(OutputFile);
+            // bugfix: first reading will always count as IMT, not HM.
+            if (PredNoRear.Length == 0) PredNoRear = SuccNoRear; 
+            if (PredNoRear.Equals(SuccNoRear)) Counter++;
+            if (!BinChange()) return;
+            double div = Counter;
+            Output.Add((div/SampleFreq).ToString(CultureInfo.InvariantCulture));
+            WriteLine((div/SampleFreq));
+            BinCount++;
             Counter = 0;
-            sw.WriteLine("Immobile Time");
-            sw.WriteLine("Bin#\tIMT(sec)\tBin timespan\t(IMT = (IdleReadings / SamplingTime), Sampling Frequency/sec: " + SampleFreq + ", Bin size: " + BinSize + " samples");
-
-            foreach (var read in Contents)
-            {
-                UpdateValues(read);
-                if (PredNoRear.Length == 0) PredNoRear = SuccNoRear; // bugfix: first reading will always count as IMT, not HM.
-                if (PredNoRear.Equals(SuccNoRear)) Counter++;
-                if (!BinChange()) continue;
-                double div = Counter;
-                Output.Add((div / SampleFreq).ToString(CultureInfo.InvariantCulture));
-                WriteLine(sw, (div / SampleFreq));
-                BinCount++;
-                Counter = 0;
-                MinCount = 0;
-            }
-            sw.Dispose();
+            MinCount = 0;
         }
     }
 }

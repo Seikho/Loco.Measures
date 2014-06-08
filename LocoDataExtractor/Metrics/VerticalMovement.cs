@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.IO;
 
 namespace LocoDataExtractor.Metrics
 {
@@ -7,31 +6,23 @@ namespace LocoDataExtractor.Metrics
     {
         public VerticalMovement(string file, int binSize, int sampleFreq = 2) : base(file, binSize, sampleFreq)
         {
+            NewFile("VM");
+            Writer.WriteLine("Vertical Movement");
+            Writer.WriteLine("Bin#\tVM(breaks)\tBin timespan\t(VM = (RearCount per Bin), Sampling Frequency/sec: " + SampleFreq + ", Bin size: " + BinSize + " samples");
         }
 
-        public override void Extract()
+        public override void Execute()
         {
-            OutputFile = NewFile("VM");
-            var sw = new StreamWriter(OutputFile);
+            if (Pred.Length == 0) Pred = "00000000"; // Pred == null on first iteration
+            var predRear = Pred.Substring(Pred.Length - 1, 1);
+            var succRear = Succ.Substring(Succ.Length - 1, 1);
+            if ((succRear.Equals("1")) && (predRear.Equals("0"))) Counter++;
+            if (!BinChange()) return;
+            Output.Add(Counter.ToString(CultureInfo.InvariantCulture));
+            WriteLine(Counter);
+            BinCount++;
             Counter = 0;
-            sw.WriteLine("Vertical Movement");
-            sw.WriteLine("Bin#\tVM(breaks)\tBin timespan\t(VM = (RearCount per Bin), Sampling Frequency/sec: " + SampleFreq + ", Bin size: " + BinSize + " samples");
-
-            foreach (var read in Contents)
-            {
-                UpdateValues(read);
-                if (Pred.Length == 0) Pred = "00000000"; // Pred == null on first iteration
-                var predRear = Pred.Substring(Pred.Length - 1, 1);
-                var succRear = Succ.Substring(Succ.Length - 1, 1);
-                if ((succRear.Equals("1")) && (predRear.Equals("0"))) Counter++;
-                if (!BinChange()) continue;
-                Output.Add(Counter.ToString(CultureInfo.InvariantCulture));
-                WriteLine(sw, Counter);
-                BinCount++;
-                Counter = 0;
-                MinCount = 0;
-            }
-            sw.Dispose();
+            MinCount = 0;
         }
     }
 }

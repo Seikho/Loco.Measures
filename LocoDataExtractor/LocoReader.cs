@@ -48,7 +48,7 @@ namespace LocoDataExtractor
 
         public void GenerateMetric(Metric metric, int binSize)
         {
-            metric.Extract();
+            metric.Execute();
             MetricOutput.Add(metric.Output);
         }
 

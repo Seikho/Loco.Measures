@@ -20,29 +20,44 @@ namespace LocoDataExtractor.Metrics
         public List<string> Output = new List<string>();
         public string OutputFile;
 
+        protected Metric(string file, int binSize, int sampleFreq = 2)
+        {
+            File = file;
+            ReadFile();
+            SampleFreq = sampleFreq;
+            BinSize = binSize;
+            MinCount = 0;
+            Counter = 0;
+            Pred = "";
+            Succ = "";
+            PredNoRear = "";
+            SuccNoRear = "";
+            BinCount = 1;
+        }
+
         abstract public void Extract();
 
-        public DateTime SampleTime(string input)
+        protected DateTime SampleTime(string input)
         {
             var split = input.Split(' ');
             return Convert.ToDateTime(split[0] + " " + split[1]);
         }
 
-        public string GetCoord(string input)
+        protected string GetCoord(string input)
         {
             var split = input.Split(' ');
             var coord = split[split.Length - 1];
             return coord;
         }
 
-        public string GetNonRearCoord(string input)
+        protected string GetNonRearCoord(string input)
         {
             var split = input.Split(' ');
             var coord = split[split.Length - 1].Substring(0, 7);
             return coord;
         }
 
-        public string NewFile(string extension)
+        protected string NewFile(string extension)
         {
             var path = Path.GetDirectoryName(File) + "\\";
             var noext = Path.GetFileNameWithoutExtension(File);
@@ -51,12 +66,12 @@ namespace LocoDataExtractor.Metrics
             return path + noext + "_" + count + "_" + extension + ".txt";
         }
 
-        public bool BinChange()
+        protected bool BinChange()
         {
             return MinCount == BinSize;
         }
 
-        public void UpdateValues(string input)
+        protected void UpdateValues(string input)
         {
             if (BinChange())
             {
@@ -70,7 +85,7 @@ namespace LocoDataExtractor.Metrics
             SuccNoRear = GetNonRearCoord(input);
         }
 
-        public void ReadFile()
+        protected void ReadFile()
         {
             Contents = new List<string>();
             using (var sr = new StreamReader(File))
@@ -83,7 +98,7 @@ namespace LocoDataExtractor.Metrics
             }
         }
 
-        public void WriteLine(StreamWriter sw, double val)
+        protected void WriteLine(StreamWriter sw, double val)
         {
             sw.WriteLine(BinCount + "\t" + val + "\t\t(Samples: " + MinCount + ")");
         }

@@ -5,19 +5,8 @@ namespace LocoDataExtractor.Metrics
 {
     public class ImmobileTime : Metric // Immobile Time
     {
-        public ImmobileTime(string file, int binSize, int sampleFreq = 2) // default sampling frequency is 2/sec
+        public ImmobileTime(string file, int binSize, int sampleFreq = 2) : base(file, binSize, sampleFreq)
         {
-            File = file;
-            ReadFile();
-            SampleFreq = sampleFreq;
-            BinSize = binSize;
-            MinCount = 0;
-            Counter = 0;
-            Pred = "";
-            Succ = "";
-            PredNoRear = "";
-            SuccNoRear = "";
-            BinCount = 1;
         }
 
         public override void Extract()

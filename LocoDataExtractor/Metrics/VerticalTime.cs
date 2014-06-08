@@ -5,19 +5,8 @@ namespace LocoDataExtractor.Metrics
 {
     public class VerticalTime : Metric // Vertical time
     {
-        public VerticalTime(string file, int binSize, int sampleFreq = 2) // Sampling frequency is 2/sec, but is changeable in the future.
+        public VerticalTime(string file, int binSize, int sampleFreq = 2) : base(file, binSize, sampleFreq)
         {
-            File = file;
-            ReadFile();
-            SampleFreq = sampleFreq;
-            BinSize = binSize;
-            MinCount = 0;
-            Counter = 0;
-            Pred = "";
-            Succ = "";
-            PredNoRear = "";
-            SuccNoRear = "";
-            BinCount = 1;
         }
 
         public override void Extract()

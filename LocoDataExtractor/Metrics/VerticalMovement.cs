@@ -5,19 +5,8 @@ namespace LocoDataExtractor.Metrics
 {
     public class VerticalMovement : Metric // Vertical movement
     {
-        public VerticalMovement(string file, int binSize, int sampleFreq = 2) // Sampling frequency is 2/sec, but is changeable in the future.
+        public VerticalMovement(string file, int binSize, int sampleFreq = 2) : base(file, binSize, sampleFreq)
         {
-            File = file;
-            ReadFile();
-            SampleFreq = sampleFreq;
-            BinSize = binSize;
-            MinCount = 0;
-            Counter = 0;
-            Pred = "";
-            Succ = "";
-            PredNoRear = "";
-            SuccNoRear = "";
-            BinCount = 1;
         }
 
         public override void Extract()
@@ -28,7 +17,7 @@ namespace LocoDataExtractor.Metrics
             sw.WriteLine("Vertical Movement");
             sw.WriteLine("Bin#\tVM(breaks)\tBin timespan\t(VM = (RearCount per Bin), Sampling Frequency/sec: " + SampleFreq + ", Bin size: " + BinSize + " samples");
 
-            foreach (string read in Contents)
+            foreach (var read in Contents)
             {
                 UpdateValues(read);
                 if (Pred.Length == 0) Pred = "00000000"; // Pred == null on first iteration

@@ -44,6 +44,7 @@ namespace LocoDataExtractor
             GenerateMetric(new VerticalMovement(Filename, binSize * (60 * SampleFreq), SampleFreq), binSize);
             GenerateMetric(new VerticalTime(Filename, binSize * (60 * SampleFreq), SampleFreq), binSize);
             GenerateMetric(new CenterVertical(Filename, binSize * (60 * SampleFreq), SampleFreq), binSize);
+            GenerateMetric(new MovementWhileVertical(Filename, binSize * (60 * SampleFreq), SampleFreq), binSize);
         }
 
         public void GenerateMetric(Metric metric, int binSize)
@@ -61,10 +62,10 @@ namespace LocoDataExtractor
             }
             using (var sw = new StreamWriter(OutputFile))
             {
-                sw.WriteLine("Rat ID,Bin#,Drug,Session#,HM,IMT,VM,VT,CV");
+                sw.WriteLine("Rat ID,Bin#,Drug,Session#,HM,IMT,VM,VT,CV,MWV");
                 for (var count = 0; count < allLen; count++)
                 {
-                    var newLine = String.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}", 
+                    var newLine = String.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", 
                         ratId,
                         count+1,
                         drug,
@@ -73,7 +74,8 @@ namespace LocoDataExtractor
                         MetricOutput[1].ElementAt(count),
                         MetricOutput[2].ElementAt(count),
                         MetricOutput[3].ElementAt(count),
-                        MetricOutput[4].ElementAt(count));
+                        MetricOutput[4].ElementAt(count),
+                        MetricOutput[5].ElementAt(count));
                     sw.WriteLine(newLine);
                 }
             }

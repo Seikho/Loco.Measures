@@ -51,6 +51,7 @@
     <Compile Include="Metrics\CenterVertical.cs" />
     <Compile Include="Metrics\HorizontalMovement.cs" />
     <Compile Include="Metrics\ImmobileTime.cs" />
+    <Compile Include="Metrics\MovementWhileVertical.cs" />
     <Compile Include="Metrics\VerticalTime.cs" />
     <Compile Include="LocoAnalyser.cs" />
     <Compile Include="LocoExtractor.cs">

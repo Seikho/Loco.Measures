@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -10,7 +9,8 @@ namespace LocoDataExtractor
     public partial class LocoExtractor : Form
     {
         protected Dictionary<string, string> RawFiles = new Dictionary<string, string>();
-        public int Frequency = 1;
+        public int Frequency = 0;
+        public int BinMinutes = 0;
         public string ChosenFile = "";
         public string ChosenFolder = "";
         public LocoExtractor()
@@ -19,7 +19,6 @@ namespace LocoDataExtractor
             FileProcessor.SelectedIndex = 0;
             fileSelect.InitialDirectory = "C:\\Files\\EncData\\";
             BinSize.Text = @"10";
-            SampleFrequency.Text = Frequency.ToString(CultureInfo.InvariantCulture);
         }
 
         private void btSelect_Click(object sender, EventArgs e)
@@ -38,54 +37,6 @@ namespace LocoDataExtractor
                 }
             }
             PopulateFileList();
-        }
-
-        private void btExtract_Click(object sender, EventArgs e)
-        {
-            int bin;
-            Int32.TryParse(BinSize.Text, out bin);
-            Frequency = 0;
-            Int32.TryParse(SampleFrequency.Text, out Frequency);
-            if (bin <= 0)
-            {
-                AddText("ERROR: One of the supplied 'Bin Sizes' is invalid (less than or equal to zero). Please fix and try again.");
-                return;
-            }
-            if (Frequency <= 0)
-            {
-                AddText("ERROR: 'Sample Frequency' is invalid (less than or equal to zero). Please fix and try again.");
-                return;
-            }
-            if (ChosenFile.Length == 0)
-            {
-                AddText("Please select a file from the Selected File(s) list box.");
-                return;
-            }
-            GetMetrics(bin);
-        }
-
-        private void GetMetrics(int bin)
-        {
-            try
-            {
-                var lrGen = new LocoReader("", Frequency);
-                var lrName = lrGen.GenerateFixedFile(FileProcessor.SelectedIndex);
-                var lr = new LocoReader(lrName);
-                lr.GenerateMetrics(bin);
-                AddText("Save location: " + Path.GetDirectoryName(lrName));
-                if (settingsDrug.Text.Length > 0 && settingsDrug.Text.Length > 0 && settingsRatID.Text.Length > 0)
-                {
-                    lr.GenRData(settingsRatID.Text, settingSessNo.Text, settingsDrug.Text);
-                    AddText("'R Data' has been saved to: " + Path.GetFileName(lr.OutputFile));
-                }
-                else AddText("'R Data' has not been generated due to missing settings");
-                AddText("Data has been successfully extracted.");
-                File.Delete(lrName);
-            }
-            catch (Exception err)
-            {
-                AddText("[LocoReader] ERROR: " + err.Message);
-            }
         }
 
         private void AddText(string text)
@@ -110,24 +61,18 @@ namespace LocoDataExtractor
 
         }
 
-        private void lbFiles_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            ChosenFile = FileList.Text;
-            textBox1.Text = ChosenFile;
-        }
-
         private void SelectFolders(object sender, EventArgs e)
         {
             folderSelect.ShowDialog();
             if (String.IsNullOrEmpty(folderSelect.SelectedPath)) return;
-            FileList.Items.Clear();
+            RawFiles.Clear();
             ChosenFolder = folderSelect.SelectedPath;
             var dirs = Directory.GetDirectories(ChosenFolder);
             foreach (var dir in dirs)
             {
                 foreach (var file in Directory.GetFiles(dir))
                 {
-                    if (!file.Contains(".txt") || file.Contains("Fixed")) continue;
+                    if (!file.Contains(".txt") || file.Contains("Fixed") || file.Contains("_")) continue;
                     RawFiles.Add(Path.GetFileNameWithoutExtension(file), file);
                 }
             }
@@ -141,11 +86,6 @@ namespace LocoDataExtractor
             SamplesPerMinute.Visible = state;
         }
 
-        private void folderSelect_HelpRequest(object sender, EventArgs e)
-        {
-
-        }
-
         private void PopulateFileList()
         {
             FileList.Items.Clear();
@@ -157,7 +97,60 @@ namespace LocoDataExtractor
 
         private void GenMetricFiles_Click(object sender, EventArgs e)
         {
+            int binSize;
+            Int32.TryParse(BinSize.Text, out binSize);
+            if (binSize == 0)
+            {
+                AddText("------");
+                AddText("The 'Bin Size' is invalid. Please set a Bin Size (Default: 5)");
+                AddText("------");
+                return;
+            }
+            BinMinutes = binSize;
+            GenerateMetrics();
+        }
 
+        private void GenerateMetrics()
+        {
+            foreach (var rawFile in RawFiles)
+            {
+                var drugName = GetParentFolder(rawFile.Value);
+                var ratId = GetRatId(rawFile.Key);
+                var sessionNumber = GetSessionNumber(rawFile.Key);
+                if (String.IsNullOrEmpty(ratId) || String.IsNullOrEmpty(sessionNumber))
+                {
+                    AddText("Could not generate metrics for: " + rawFile.Key + ": Filename does not meet criteria: [RatID]-[SessionNumber].txt");
+                    AddText("File location: " + rawFile.Value);
+                    AddText("");
+                }
+                var lr = new LocoReader(rawFile.Value, 2);
+                
+                AddText(String.Format("File: {0} Drug: {1} Rat: {2} Session: {3}"
+                    ,rawFile.Key,drugName,ratId,sessionNumber));
+                lr.GenerateMetrics(BinMinutes);
+                lr.GenRData(ratId, sessionNumber, drugName);
+            }
+        }
+
+        private string GetParentFolder(string file)
+        {
+            var split = Path.GetFullPath(file).Split("\\".ToCharArray()[0]);
+            return split[split.Length - 2];
+        }
+
+        private string GetRatId(string fileName)
+        {
+            if (String.IsNullOrEmpty(fileName)) return "";
+            var split = fileName.Split('-');
+            return split[0];
+        }
+
+        private string GetSessionNumber(string fileName)
+        {
+            if (String.IsNullOrEmpty(fileName)) return "";
+            var split = fileName.Split('-');
+            if (split.Length < 2) return "";
+            return split[1];
         }
     }
 }

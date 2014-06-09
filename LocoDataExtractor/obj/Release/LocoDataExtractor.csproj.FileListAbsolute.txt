@@ -37,3 +37,12 @@ C:\Users\c.winkler.ASTHM\SkyDrive\Documents\Ange\LocoTools\Source\LocoDataExtrac
 C:\Users\c.winkler.ASTHM\SkyDrive\Documents\Ange\LocoTools\Source\LocoDataExtractor\LocoDataExtractor\obj\Release\LocoDataExtractor.csproj.GenerateResource.Cache
 C:\Users\c.winkler.ASTHM\SkyDrive\Documents\Ange\LocoTools\Source\LocoDataExtractor\LocoDataExtractor\bin\Release\LocoDataExtractor.exe
 C:\Users\c.winkler.ASTHM\SkyDrive\Documents\Ange\LocoTools\Source\LocoDataExtractor\LocoDataExtractor\bin\Release\LocoDataExtractor.pdb
+C:\Projects\LocoDataExtractor\LocoDataExtractor\bin\Release\LocoDataExtractor.exe.config
+C:\Projects\LocoDataExtractor\LocoDataExtractor\obj\Release\LocoDataExtractor.exe
+C:\Projects\LocoDataExtractor\LocoDataExtractor\obj\Release\LocoDataExtractor.pdb
+C:\Projects\LocoDataExtractor\LocoDataExtractor\bin\Release\LocoDataExtractor.exe
+C:\Projects\LocoDataExtractor\LocoDataExtractor\bin\Release\LocoDataExtractor.pdb
+C:\Projects\LocoDataExtractor\LocoDataExtractor\obj\Release\LocoDataExtractor.csprojResolveAssemblyReference.cache
+C:\Projects\LocoDataExtractor\LocoDataExtractor\obj\Release\LocoDataExtractor.LocoExtractor.resources
+C:\Projects\LocoDataExtractor\LocoDataExtractor\obj\Release\LocoDataExtractor.Properties.Resources.resources
+C:\Projects\LocoDataExtractor\LocoDataExtractor\obj\Release\LocoDataExtractor.csproj.GenerateResource.Cache

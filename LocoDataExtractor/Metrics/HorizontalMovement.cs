@@ -4,9 +4,8 @@ namespace LocoDataExtractor.Metrics
 {
     public class HorizontalMovement : Metric // Horizontal movement
     {
-        public HorizontalMovement(string file, int binSize, int sampleFreq = 2) : base(file, binSize, sampleFreq)
+        public HorizontalMovement(string targetFile, int binSize, int sampleFreq = 2) : base(targetFile, binSize, sampleFreq)
         {
-            NewFile("HM");
             Writer.WriteLine("Horizontal Movement");
             Writer.WriteLine("Bin#\tHM(breaks)\tBin timespan\t(HM = (MovementCount per Bin), Sampling Frequency/sec: " + SampleFreq + ", Bin size: " + BinSize + " samples");
         }

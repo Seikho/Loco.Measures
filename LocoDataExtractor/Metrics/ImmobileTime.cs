@@ -4,9 +4,8 @@ namespace LocoDataExtractor.Metrics
 {
     public class ImmobileTime : Metric // Immobile Time
     {
-        public ImmobileTime(string file, int binSize, int sampleFreq = 2) : base(file, binSize, sampleFreq)
+        public ImmobileTime(string targetFile, int binSize, int sampleFreq = 2) : base(targetFile, binSize, sampleFreq)
         {
-            NewFile("IMT");
             Writer.WriteLine("Immobile Time");
             Writer.WriteLine("Bin#\tIMT(sec)\tBin timespan\t(IMT = (IdleReadings / SamplingTime), Sampling Frequency/sec: " + SampleFreq + ", Bin size: " + BinSize + " samples");
         }

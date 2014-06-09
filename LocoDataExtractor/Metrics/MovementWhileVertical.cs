@@ -1,17 +1,18 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace LocoDataExtractor.Metrics
 {
     public class MovementWhileVertical : Metric
     {
-        public MovementWhileVertical(string file, int binSize, int sampleFreq = 2) : base(file, binSize, sampleFreq)
+        public MovementWhileVertical(string targetFile, int binSize, int sampleFreq = 2) : base(targetFile, binSize, sampleFreq)
         {
+            Writer.WriteLine("Vertical Time");
+            Writer.WriteLine("Bin#\tVT(secs)\tBin timespan\t(MWV = (VerticalCount / SampleFreq), Sampling Frequency/sec: " +
+                SampleFreq + ", Bin size: " + BinSize + " samples");
         }
 
         public override void Execute()
         {
-            if (String.IsNullOrEmpty(Pred)) Pred = "00000000";
             var predRear = Pred.Substring(Pred.Length-1, 1);
             var succRear = Succ.Substring(Succ.Length - 1, 1);
             if (!predRear.Equals("1") || !succRear.Equals("1")) return;

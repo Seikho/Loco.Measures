@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.ComponentModel;
@@ -8,9 +9,10 @@ namespace LocoDataExtractor
 {
     public partial class LocoExtractor : Form
     {
+        protected Dictionary<string, string> RawFiles = new Dictionary<string, string>();
         public int Frequency = 1;
-        public string FilePath = "";
         public string ChosenFile = "";
+        public string ChosenFolder = "";
         public LocoExtractor()
         {
             InitializeComponent();
@@ -22,18 +24,20 @@ namespace LocoDataExtractor
 
         private void btSelect_Click(object sender, EventArgs e)
         {
-            FilePath = "";
             fileSelect.ShowDialog();
         }
 
         private void fileSelect_FileOk(object sender, CancelEventArgs e)
         {
+            RawFiles.Clear();
             foreach (var file in fileSelect.FileNames)
             {
-                if (String.IsNullOrEmpty(FilePath)) FilePath = Path.GetDirectoryName(file);
-                if (!String.IsNullOrEmpty(file)) FileList.Items.Add(Path.GetFileName(file));
+                if (!String.IsNullOrEmpty(file))
+                {
+                    RawFiles.Add(Path.GetFileName(file), file);
+                }
             }
-            
+            PopulateFileList();
         }
 
         private void btExtract_Click(object sender, EventArgs e)
@@ -64,7 +68,7 @@ namespace LocoDataExtractor
         {
             try
             {
-                var lrGen = new LocoReader(FilePath + "\\" + ChosenFile, Frequency);
+                var lrGen = new LocoReader("", Frequency);
                 var lrName = lrGen.GenerateFixedFile(FileProcessor.SelectedIndex);
                 var lr = new LocoReader(lrName);
                 lr.GenerateMetrics(bin);
@@ -95,10 +99,12 @@ namespace LocoDataExtractor
 
         private void btRepair_Click(object sender, EventArgs e)
         {
-            foreach (var line in fileSelect.FileNames)
+            foreach (var line in RawFiles)
             {
-                var lr = new LocoReader(line, Frequency);
-                lr.GenerateFixedFile(FileProcessor.SelectedIndex, false);
+                int samplesPerMin;
+                Int32.TryParse(SamplesPerMinute.Text, out samplesPerMin);
+                var lr = new LocoReader(line.Value, Frequency);
+                lr.GenerateFixedFile(FileProcessor.SelectedIndex, samplesPerMin);
             }
             AddText("All files have been repaired.");
 
@@ -108,6 +114,50 @@ namespace LocoDataExtractor
         {
             ChosenFile = FileList.Text;
             textBox1.Text = ChosenFile;
+        }
+
+        private void SelectFolders(object sender, EventArgs e)
+        {
+            folderSelect.ShowDialog();
+            if (String.IsNullOrEmpty(folderSelect.SelectedPath)) return;
+            FileList.Items.Clear();
+            ChosenFolder = folderSelect.SelectedPath;
+            var dirs = Directory.GetDirectories(ChosenFolder);
+            foreach (var dir in dirs)
+            {
+                foreach (var file in Directory.GetFiles(dir))
+                {
+                    if (!file.Contains(".txt") || file.Contains("Fixed")) continue;
+                    RawFiles.Add(Path.GetFileNameWithoutExtension(file), file);
+                }
+            }
+            PopulateFileList();
+        }
+
+        private void FileProcessor_SelectedValueChanged(object sender, EventArgs e)
+        {
+            var state = FileProcessor.SelectedIndex == 2;
+            samplesLabel.Visible = state;
+            SamplesPerMinute.Visible = state;
+        }
+
+        private void folderSelect_HelpRequest(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PopulateFileList()
+        {
+            FileList.Items.Clear();
+            foreach (var row in RawFiles)
+            {
+                FileList.Items.Add(row.Key);
+            }
+        }
+
+        private void GenMetricFiles_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

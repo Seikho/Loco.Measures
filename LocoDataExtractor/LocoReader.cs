@@ -22,9 +22,9 @@ namespace LocoDataExtractor
             OutputFile = NewFile("RData", true);
         }
 
-        public string GenerateFixedFile(int fileProcessor, bool delete = true)
+        public string GenerateFixedFile(int fileProcessor, int samplesPerMin = 120)
         {
-            var tempName = NewFile((delete?"Temp":"Fixed"));
+            var tempName = NewFile("Fixed");
             switch (fileProcessor)
             {
                 case 0:
@@ -32,6 +32,9 @@ namespace LocoDataExtractor
                     break;
                 case 1:
                     new BlankShift(Filename, tempName).Process();
+                    break;
+                case 2:
+                    new CustomBlankShift(samplesPerMin, Filename, tempName).Process();
                     break;
             }
             return tempName;

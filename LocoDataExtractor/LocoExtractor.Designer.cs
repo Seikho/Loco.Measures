@@ -33,7 +33,11 @@
             this.btExtract = new System.Windows.Forms.Button();
             this.console = new System.Windows.Forms.RichTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.samplesLabel = new System.Windows.Forms.Label();
+            this.SamplesPerMinute = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.FileProcessor = new System.Windows.Forms.ComboBox();
             this.btRepair = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.FileList = new System.Windows.Forms.ListBox();
@@ -52,8 +56,8 @@
             this.label8 = new System.Windows.Forms.Label();
             this.SampleFrequency = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.FileProcessor = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.folderSelect = new System.Windows.Forms.FolderBrowserDialog();
+            this.GenMetricFiles = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -69,7 +73,7 @@
             // 
             this.btSelect.Location = new System.Drawing.Point(153, 41);
             this.btSelect.Name = "btSelect";
-            this.btSelect.Size = new System.Drawing.Size(75, 23);
+            this.btSelect.Size = new System.Drawing.Size(90, 23);
             this.btSelect.TabIndex = 0;
             this.btSelect.Text = "Select File(s)";
             this.btSelect.UseVisualStyleBackColor = true;
@@ -96,9 +100,12 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.GenMetricFiles);
+            this.groupBox1.Controls.Add(this.samplesLabel);
+            this.groupBox1.Controls.Add(this.SamplesPerMinute);
+            this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.FileProcessor);
-            this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.btRepair);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.FileList);
@@ -112,20 +119,64 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Data Extraction Settings";
             // 
-            // label2
+            // samplesLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(274, 122);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(106, 13);
-            this.label2.TabIndex = 16;
-            this.label2.Text = "Generate Fixed Files:";
+            this.samplesLabel.AutoSize = true;
+            this.samplesLabel.ForeColor = System.Drawing.Color.Maroon;
+            this.samplesLabel.Location = new System.Drawing.Point(6, 69);
+            this.samplesLabel.Name = "samplesLabel";
+            this.samplesLabel.Size = new System.Drawing.Size(71, 13);
+            this.samplesLabel.TabIndex = 21;
+            this.samplesLabel.Text = "Samples/min:";
+            this.samplesLabel.Visible = false;
+            // 
+            // SamplesPerMinute
+            // 
+            this.SamplesPerMinute.BackColor = System.Drawing.Color.DarkOrange;
+            this.SamplesPerMinute.Location = new System.Drawing.Point(82, 66);
+            this.SamplesPerMinute.Name = "SamplesPerMinute";
+            this.SamplesPerMinute.Size = new System.Drawing.Size(43, 20);
+            this.SamplesPerMinute.TabIndex = 20;
+            this.SamplesPerMinute.Text = "120";
+            this.SamplesPerMinute.Visible = false;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(153, 71);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(90, 23);
+            this.button1.TabIndex = 19;
+            this.button1.Text = "Select Folder";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.SelectFolders);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 27);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(120, 13);
+            this.label4.TabIndex = 18;
+            this.label4.Text = "File Processing Method:";
+            // 
+            // FileProcessor
+            // 
+            this.FileProcessor.FormattingEnabled = true;
+            this.FileProcessor.Items.AddRange(new object[] {
+            "Blank Fill Method",
+            "Blank Shift Method",
+            "Custom Blank Shift Method"});
+            this.FileProcessor.Location = new System.Drawing.Point(6, 43);
+            this.FileProcessor.Name = "FileProcessor";
+            this.FileProcessor.Size = new System.Drawing.Size(141, 21);
+            this.FileProcessor.TabIndex = 17;
+            this.FileProcessor.SelectedValueChanged += new System.EventHandler(this.FileProcessor_SelectedValueChanged);
             // 
             // btRepair
             // 
-            this.btRepair.Location = new System.Drawing.Point(392, 117);
+            this.btRepair.Location = new System.Drawing.Point(246, 117);
             this.btRepair.Name = "btRepair";
-            this.btRepair.Size = new System.Drawing.Size(92, 23);
+            this.btRepair.Size = new System.Drawing.Size(110, 23);
             this.btRepair.TabIndex = 15;
             this.btRepair.Text = "Process Files";
             this.btRepair.UseVisualStyleBackColor = true;
@@ -286,25 +337,19 @@
             this.label7.TabIndex = 6;
             this.label7.Text = "Information:";
             // 
-            // FileProcessor
+            // folderSelect
             // 
-            this.FileProcessor.FormattingEnabled = true;
-            this.FileProcessor.Items.AddRange(new object[] {
-            "Blank Fill Method",
-            "Blank Shift Method"});
-            this.FileProcessor.Location = new System.Drawing.Point(6, 43);
-            this.FileProcessor.Name = "FileProcessor";
-            this.FileProcessor.Size = new System.Drawing.Size(121, 21);
-            this.FileProcessor.TabIndex = 17;
+            this.folderSelect.HelpRequest += new System.EventHandler(this.folderSelect_HelpRequest);
             // 
-            // label4
+            // GenMetricFiles
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 27);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(120, 13);
-            this.label4.TabIndex = 18;
-            this.label4.Text = "File Processing Method:";
+            this.GenMetricFiles.Location = new System.Drawing.Point(362, 116);
+            this.GenMetricFiles.Name = "GenMetricFiles";
+            this.GenMetricFiles.Size = new System.Drawing.Size(120, 23);
+            this.GenMetricFiles.TabIndex = 22;
+            this.GenMetricFiles.Text = "Generate Metric Files";
+            this.GenMetricFiles.UseVisualStyleBackColor = true;
+            this.GenMetricFiles.Click += new System.EventHandler(this.GenMetricFiles_Click);
             // 
             // LocoExtractor
             // 
@@ -352,11 +397,15 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListBox FileList;
         private System.Windows.Forms.Button btRepair;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox FileProcessor;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.FolderBrowserDialog folderSelect;
+        private System.Windows.Forms.Label samplesLabel;
+        private System.Windows.Forms.TextBox SamplesPerMinute;
+        private System.Windows.Forms.Button GenMetricFiles;
     }
 }
 

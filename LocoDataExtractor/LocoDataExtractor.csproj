@@ -64,6 +64,7 @@
     <Compile Include="LocoReader.cs" />
     <Compile Include="Processors\BlankFiller.cs" />
     <Compile Include="Processors\BlankShift.cs" />
+    <Compile Include="Processors\CustomBlankShift.cs" />
     <Compile Include="Processors\Processor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -42,8 +42,6 @@
             this.FileProcessor = new System.Windows.Forms.ComboBox();
             this.btRepair = new System.Windows.Forms.Button();
             this.FileList = new System.Windows.Forms.ListBox();
-            this.BinSize = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.folderSelect = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox1.SuspendLayout();
@@ -87,8 +85,6 @@
             this.groupBox1.Controls.Add(this.FileProcessor);
             this.groupBox1.Controls.Add(this.btRepair);
             this.groupBox1.Controls.Add(this.FileList);
-            this.groupBox1.Controls.Add(this.BinSize);
-            this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.btSelect);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
@@ -195,22 +191,6 @@
             this.FileList.Size = new System.Drawing.Size(233, 134);
             this.FileList.TabIndex = 13;
             // 
-            // BinSize
-            // 
-            this.BinSize.Location = new System.Drawing.Point(131, 164);
-            this.BinSize.Name = "BinSize";
-            this.BinSize.Size = new System.Drawing.Size(59, 20);
-            this.BinSize.TabIndex = 12;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(9, 167);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(116, 13);
-            this.label13.TabIndex = 11;
-            this.label13.Text = "Bin Size (N of minutes):";
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -251,8 +231,6 @@
         private System.Windows.Forms.RichTextBox console;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox BinSize;
-        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ListBox FileList;
         private System.Windows.Forms.Button btRepair;
         private System.Windows.Forms.Label label4;

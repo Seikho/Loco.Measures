@@ -18,7 +18,6 @@ namespace LocoDataExtractor
             InitializeComponent();
             FileProcessor.SelectedIndex = 0;
             fileSelect.InitialDirectory = "C:\\Files\\EncData\\";
-            BinSize.Text = @"10";
         }
 
         private void btSelect_Click(object sender, EventArgs e)
@@ -63,8 +62,10 @@ namespace LocoDataExtractor
 
         private void SelectFolders(object sender, EventArgs e)
         {
+            folderSelect.SelectedPath = "";
             folderSelect.ShowDialog();
             if (String.IsNullOrEmpty(folderSelect.SelectedPath)) return;
+            AddText(folderSelect.SelectedPath);
             RawFiles.Clear();
             ChosenFolder = folderSelect.SelectedPath;
             var dirs = Directory.GetDirectories(ChosenFolder);
@@ -98,7 +99,7 @@ namespace LocoDataExtractor
         private void GenMetricFiles_Click(object sender, EventArgs e)
         {
             int binSize;
-            Int32.TryParse(BinSize.Text, out binSize);
+            Int32.TryParse(BinSizeInput.Text, out binSize);
             if (binSize == 0)
             {
                 AddText("------");

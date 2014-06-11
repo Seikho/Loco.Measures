@@ -35,8 +35,6 @@
             this.BinSizeInput = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.GenMetricFiles = new System.Windows.Forms.Button();
-            this.samplesLabel = new System.Windows.Forms.Label();
-            this.SamplesPerMinute = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.FileProcessor = new System.Windows.Forms.ComboBox();
@@ -44,6 +42,8 @@
             this.FileList = new System.Windows.Forms.ListBox();
             this.label7 = new System.Windows.Forms.Label();
             this.folderSelect = new System.Windows.Forms.FolderBrowserDialog();
+            this.label2 = new System.Windows.Forms.Label();
+            this.SamplesPerMinuteInput = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -75,11 +75,11 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.SamplesPerMinuteInput);
+            this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.BinSizeInput);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.GenMetricFiles);
-            this.groupBox1.Controls.Add(this.samplesLabel);
-            this.groupBox1.Controls.Add(this.SamplesPerMinute);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.FileProcessor);
@@ -119,27 +119,6 @@
             this.GenMetricFiles.Text = "Generate Metric Files";
             this.GenMetricFiles.UseVisualStyleBackColor = true;
             this.GenMetricFiles.Click += new System.EventHandler(this.GenMetricFiles_Click);
-            // 
-            // samplesLabel
-            // 
-            this.samplesLabel.AutoSize = true;
-            this.samplesLabel.ForeColor = System.Drawing.Color.Maroon;
-            this.samplesLabel.Location = new System.Drawing.Point(9, 73);
-            this.samplesLabel.Name = "samplesLabel";
-            this.samplesLabel.Size = new System.Drawing.Size(71, 13);
-            this.samplesLabel.TabIndex = 21;
-            this.samplesLabel.Text = "Samples/min:";
-            this.samplesLabel.Visible = false;
-            // 
-            // SamplesPerMinute
-            // 
-            this.SamplesPerMinute.BackColor = System.Drawing.Color.DarkOrange;
-            this.SamplesPerMinute.Location = new System.Drawing.Point(86, 70);
-            this.SamplesPerMinute.Name = "SamplesPerMinute";
-            this.SamplesPerMinute.Size = new System.Drawing.Size(43, 20);
-            this.SamplesPerMinute.TabIndex = 20;
-            this.SamplesPerMinute.Text = "120";
-            this.SamplesPerMinute.Visible = false;
             // 
             // button1
             // 
@@ -204,6 +183,23 @@
             // 
             this.folderSelect.SelectedPath = "C:\\";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(186, 170);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(102, 13);
+            this.label2.TabIndex = 25;
+            this.label2.Text = "Samples per minute:";
+            // 
+            // SamplesPerMinuteInput
+            // 
+            this.SamplesPerMinuteInput.Location = new System.Drawing.Point(294, 167);
+            this.SamplesPerMinuteInput.Name = "SamplesPerMinuteInput";
+            this.SamplesPerMinuteInput.Size = new System.Drawing.Size(42, 20);
+            this.SamplesPerMinuteInput.TabIndex = 26;
+            this.SamplesPerMinuteInput.Text = "120";
+            // 
             // LocoExtractor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -237,11 +233,11 @@
         private System.Windows.Forms.ComboBox FileProcessor;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.FolderBrowserDialog folderSelect;
-        private System.Windows.Forms.Label samplesLabel;
-        private System.Windows.Forms.TextBox SamplesPerMinute;
         private System.Windows.Forms.Button GenMetricFiles;
         private System.Windows.Forms.TextBox BinSizeInput;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox SamplesPerMinuteInput;
+        private System.Windows.Forms.Label label2;
     }
 }
 

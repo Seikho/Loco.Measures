@@ -11,12 +11,12 @@ namespace LocoDataExtractor
     {
         public string Filename = "";
         public Metric Measurer;
-        protected int SampleFreq = 1; // Samples per second
+        protected int SamplesPerMinute = 120; // Samples per minute
         public string OutputFile = "";
         protected List<IEnumerable<string>> MetricOutput = new List<IEnumerable<string>>();
-        public LocoReader(string file, int sampleFreq = 1)
+        public LocoReader(string file, int samplesPerMinute = 1)
         {
-            SampleFreq = sampleFreq;
+            SamplesPerMinute = samplesPerMinute;
             if (!File.Exists(file)) throw new IOException("Unable to find file '" + file + "'");
             Filename = file;
             OutputFile = NewFile("RData", true);
@@ -42,12 +42,12 @@ namespace LocoDataExtractor
 
         public void GenerateMetrics(int binSize = 1)
         {
-            GenerateMetric(new HorizontalMovement(Filename, binSize * (60 * SampleFreq), SampleFreq), binSize);
-            GenerateMetric(new ImmobileTime(Filename, binSize * (60 * SampleFreq), SampleFreq), binSize);
-            GenerateMetric(new VerticalMovement(Filename, binSize * (60 * SampleFreq), SampleFreq), binSize);
-            GenerateMetric(new VerticalTime(Filename, binSize * (60 * SampleFreq), SampleFreq), binSize);
-            GenerateMetric(new CenterVertical(Filename, binSize * (60 * SampleFreq), SampleFreq), binSize);
-            GenerateMetric(new MovementWhileVertical(Filename, binSize * (60 * SampleFreq), SampleFreq), binSize);
+            GenerateMetric(new HorizontalMovement(Filename, binSize * SamplesPerMinute), binSize);
+            GenerateMetric(new ImmobileTime(Filename, binSize * SamplesPerMinute), binSize);
+            GenerateMetric(new VerticalMovement(Filename, binSize * SamplesPerMinute), binSize);
+            GenerateMetric(new VerticalTime(Filename, binSize * SamplesPerMinute), binSize);
+            GenerateMetric(new CenterVertical(Filename, binSize * SamplesPerMinute), binSize);
+            GenerateMetric(new MovementWhileVertical(Filename, binSize * SamplesPerMinute), binSize);
         }
 
         public void GenerateMetric(Metric metric, int binSize)

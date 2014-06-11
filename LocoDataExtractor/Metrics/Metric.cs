@@ -15,17 +15,15 @@ namespace LocoDataExtractor.Metrics
         public string Succ; // Includes rearing value
         public string SuccNoRear; // Does not inclue rearing value
         public string TargetFile;
-        public int SampleFreq;
         public List<string> Contents;
         public List<string> Output = new List<string>();
         public string OutputFile;
         public StreamWriter Writer;
 
-        protected Metric(string targetFile, int binSize, int sampleFreq = 2)
+        protected Metric(string targetFile, int binSize)
         {
             TargetFile = targetFile;
             ReadFile();
-            SampleFreq = sampleFreq;
             BinSize = binSize;
             MinCount = 0;
             Counter = 0;

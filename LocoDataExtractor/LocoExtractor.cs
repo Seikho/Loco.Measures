@@ -11,6 +11,7 @@ namespace LocoDataExtractor
         protected Dictionary<string, string> RawFiles = new Dictionary<string, string>();
         public int Frequency = 0;
         public int BinMinutes = 0;
+        public int SamplesPerMinute = 0;
         public string ChosenFile = "";
         public string ChosenFolder = "";
         public LocoExtractor()
@@ -52,7 +53,7 @@ namespace LocoDataExtractor
             foreach (var line in RawFiles)
             {
                 int samplesPerMin;
-                Int32.TryParse(SamplesPerMinute.Text, out samplesPerMin);
+                Int32.TryParse(SamplesPerMinuteInput.Text, out samplesPerMin);
                 var lr = new LocoReader(line.Value, Frequency);
                 lr.GenerateFixedFile(FileProcessor.SelectedIndex, samplesPerMin);
             }
@@ -82,9 +83,6 @@ namespace LocoDataExtractor
 
         private void FileProcessor_SelectedValueChanged(object sender, EventArgs e)
         {
-            var state = FileProcessor.SelectedIndex == 2;
-            samplesLabel.Visible = state;
-            SamplesPerMinute.Visible = state;
         }
 
         private void PopulateFileList()
@@ -98,8 +96,9 @@ namespace LocoDataExtractor
 
         private void GenMetricFiles_Click(object sender, EventArgs e)
         {
-            int binSize;
+            int binSize,samplesPerMin;
             Int32.TryParse(BinSizeInput.Text, out binSize);
+            Int32.TryParse(SamplesPerMinuteInput.Text, out samplesPerMin);
             if (binSize == 0)
             {
                 AddText("------");
@@ -108,6 +107,7 @@ namespace LocoDataExtractor
                 return;
             }
             BinMinutes = binSize;
+            SamplesPerMinute = samplesPerMin;
             GenerateMetrics();
         }
 
@@ -124,7 +124,7 @@ namespace LocoDataExtractor
                     AddText("File location: " + rawFile.Value);
                     AddText("");
                 }
-                var lr = new LocoReader(rawFile.Value, 2);
+                var lr = new LocoReader(rawFile.Value, SamplesPerMinute);
                 
                 AddText(String.Format("File: {0} Drug: {1} Rat: {2} Session: {3}"
                     ,rawFile.Key,drugName,ratId,sessionNumber));

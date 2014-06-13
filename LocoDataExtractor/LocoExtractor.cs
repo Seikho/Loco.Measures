@@ -54,7 +54,7 @@ namespace LocoDataExtractor
             {
                 int samplesPerMin;
                 Int32.TryParse(SamplesPerMinuteInput.Text, out samplesPerMin);
-                var lr = new LocoReader(line.Value, Frequency);
+                var lr = new LocoReader(line.Value, BinMinutes, SamplesPerMinute);
                 lr.GenerateFixedFile(FileProcessor.SelectedIndex, samplesPerMin);
             }
             AddText("All files have been repaired.");
@@ -124,11 +124,11 @@ namespace LocoDataExtractor
                     AddText("File location: " + rawFile.Value);
                     AddText("");
                 }
-                var lr = new LocoReader(rawFile.Value, SamplesPerMinute);
+                var lr = new LocoReader(rawFile.Value, BinMinutes, SamplesPerMinute);
                 
                 AddText(String.Format("File: {0} Drug: {1} Rat: {2} Session: {3}"
                     ,rawFile.Key,drugName,ratId,sessionNumber));
-                lr.GenerateMetrics(BinMinutes);
+                lr.GenerateMetrics();
                 lr.GenRData(ratId, sessionNumber, drugName);
             }
         }

@@ -6,10 +6,11 @@ namespace LocoDataExtractor.Metrics
 {
     public abstract class Metric
     {
-        public int BinSize;
+        public int SamplesPerMinute;
         public int Counter;
         public int MinCount;
         public int BinCount;
+        public int MinutesPerBin;
         public string Pred { get; set; } // Includes rearing value
         public string PredNoRear; // Does not inclue rearing value
         public string Succ; // Includes rearing value
@@ -20,11 +21,12 @@ namespace LocoDataExtractor.Metrics
         public string OutputFile;
         public StreamWriter Writer;
 
-        protected Metric(string targetFile, int binSize)
+        protected Metric(string targetFile, int samplesPerMinute, int minutesPerBin = 5)
         {
+            MinutesPerBin = minutesPerBin;
             TargetFile = targetFile;
             ReadFile();
-            BinSize = binSize;
+            SamplesPerMinute = samplesPerMinute;
             MinCount = 0;
             Counter = 0;
             Pred = "00000000";
@@ -79,7 +81,7 @@ namespace LocoDataExtractor.Metrics
 
         protected bool BinChange()
         {
-            return MinCount == BinSize;
+            return MinCount == SamplesPerMinute*MinutesPerBin;
         }
 
         protected void UpdateValues(string input)

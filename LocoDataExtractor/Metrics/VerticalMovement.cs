@@ -4,10 +4,11 @@ namespace LocoDataExtractor.Metrics
 {
     public class VerticalMovement : Metric // Vertical movement
     {
-        public VerticalMovement(string targetFile, int binSize) : base(targetFile, binSize)
+        public VerticalMovement(string targetFile, int samplesPerMinute, int minutesPerBin)
+            : base(targetFile, samplesPerMinute, minutesPerBin)
         {
             Writer.WriteLine("Vertical Movement");
-            Writer.WriteLine("Bin#\tVM(breaks)\tBin timespan\t(VM = (RearCount per Bin), Sampling Frequency/sec: 2, Bin size: " + BinSize + " samples");
+            Writer.WriteLine("Bin#\tVM(breaks)\tBin timespan\t(VM = (RearCount per Bin), Samples per minute: " + SamplesPerMinute + ", Minutes per bin: " + MinutesPerBin);
         }
 
         public override void Execute()

@@ -7,7 +7,7 @@ namespace LocoDataExtractor.Metrics
         public CenterVertical(string targetFile, int samplesPerMinute, int minutesPerBin) : base(targetFile, samplesPerMinute, minutesPerBin)
         {
             Writer.WriteLine("Center-Rearing Movement");
-            Writer.WriteLine("Bin#\tVM(breaks)\tBin timespan\t(CV = (Central RearCount per Bin), Samples per minute: " + SamplesPerMinute + ", Minutes per bin: " + MinutesPerBin);
+            Writer.WriteLine("Bin#\tVM(breaks)\tBin timespan\t(CV = (Central RearCount per Bin), Samples per minute: " + SamplesPerMinute + ", Minutes per bin: " + MinutesPerBin); 
         }
 
         public override void Execute()

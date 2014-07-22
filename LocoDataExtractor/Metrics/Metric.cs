@@ -6,19 +6,19 @@ namespace LocoDataExtractor.Metrics
 {
     public abstract class Metric
     {
-        public int SamplesPerMinute;
-        public int Counter;
-        public int MinCount;
-        public int BinCount;
-        public int MinutesPerBin;
+        public int SamplesPerMinute { get; set; }
+        public int Counter { get; set; }
+        public int MinCount { get; set; }
+        public int BinCount { get; set; }
+        public int MinutesPerBin { get; set; }
         public string Pred { get; set; } // Includes rearing value
-        public string PredNoRear; // Does not inclue rearing value
-        public string Succ; // Includes rearing value
-        public string SuccNoRear; // Does not inclue rearing value
-        public string TargetFile;
-        public List<string> Contents;
+        public string PredNoRear { get; set; } // Does not inclue rearing value
+        public string Succ { get; set; }// Includes rearing value
+        public string SuccNoRear { get; set; } // Does not inclue rearing value
+        public string TargetFile { get; set; }
+        public List<string> Contents = new List<string>();
         public List<string> Output = new List<string>();
-        public string OutputFile;
+        public string OutputFile { get; set; }
         public StreamWriter Writer;
 
         protected Metric(string targetFile, int samplesPerMinute, int minutesPerBin = 5)

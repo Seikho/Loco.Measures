@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+﻿using LocoDataExtractor.Metrics.Strategy;
 
 namespace LocoDataExtractor.Metrics
 {
@@ -6,6 +6,7 @@ namespace LocoDataExtractor.Metrics
     {
         public CenterVertical(string targetFile, int samplesPerMinute, int minutesPerBin) : base(targetFile, samplesPerMinute, minutesPerBin)
         {
+            Strategy = new CountStrategy();
             Writer.WriteLine("Center-Rearing Movement");
             Writer.WriteLine("Bin#\tVM(breaks)\tBin timespan\t(CV = (Central RearCount per Bin), Samples per minute: " + SamplesPerMinute + ", Minutes per bin: " + MinutesPerBin); 
         }
@@ -20,12 +21,6 @@ namespace LocoDataExtractor.Metrics
             var succY2 = Succ.Substring(5, 1);
             if (((succRear.Equals("1")) && (predRear.Equals("0"))) && (succY2.Equals("1")) &&
                 ((succX1.Equals("1")) || (succX2.Equals("1")))) Counter++;
-            if (!BinChange()) return;
-            Output.Add(Counter.ToString(CultureInfo.InvariantCulture));
-            WriteLine(Counter);
-            BinCount++;
-            Counter = 0;
-            MinCount = 0;
         }
     }
 }

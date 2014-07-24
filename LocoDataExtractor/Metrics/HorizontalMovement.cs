@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+﻿using LocoDataExtractor.Metrics.Strategy;
 
 namespace LocoDataExtractor.Metrics
 {
@@ -7,6 +7,7 @@ namespace LocoDataExtractor.Metrics
         public HorizontalMovement(string targetFile, int samplesPerMinute, int minutesPerBin)
             : base(targetFile, samplesPerMinute, minutesPerBin)
         {
+            Strategy = new CountStrategy();
             Writer.WriteLine("Horizontal Movement");
             Writer.WriteLine("Bin#\tHM(breaks)\tBin timespan\t(HM = (MovementCount per Bin), Samples per minute: " + SamplesPerMinute + ", Minutes per bin: " + MinutesPerBin);
         }
@@ -15,12 +16,6 @@ namespace LocoDataExtractor.Metrics
         {
             if (PredNoRear.Length == 0) PredNoRear = SuccNoRear; // bugfix: first reading will always count as IMT, not HM.
             if (!PredNoRear.Equals(SuccNoRear)) Counter++;
-            if (!BinChange()) return;
-            Output.Add(Counter.ToString(CultureInfo.InvariantCulture));
-            WriteLine(Counter);
-            BinCount++;
-            Counter = 0;
-            MinCount = 0;
         }
     }
 }

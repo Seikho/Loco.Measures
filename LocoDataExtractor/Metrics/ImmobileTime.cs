@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+﻿using LocoDataExtractor.Metrics.Strategy;
 
 namespace LocoDataExtractor.Metrics
 {
@@ -7,6 +7,7 @@ namespace LocoDataExtractor.Metrics
         public ImmobileTime(string targetFile, int samplesPerMinute, int minutesPerBin)
             : base(targetFile, samplesPerMinute, minutesPerBin)
         {
+            Strategy = new TimeStrategy();
             Writer.WriteLine("Immobile Time");
             Writer.WriteLine("Bin#\tIMT(sec)\tBin timespan\t(IMT = (IdleReadings / SamplingTime), Samples per minute: " + SamplesPerMinute + ", Minutes per bin: " + MinutesPerBin);
         }
@@ -16,13 +17,6 @@ namespace LocoDataExtractor.Metrics
             // bugfix: first reading will always count as IMT, not HM.
             if (PredNoRear.Length == 0) PredNoRear = SuccNoRear; 
             if (PredNoRear.Equals(SuccNoRear)) Counter++;
-            if (!BinChange()) return;
-            double div = Counter;
-            Output.Add((div/2).ToString(CultureInfo.InvariantCulture));
-            WriteLine((div/2));
-            BinCount++;
-            Counter = 0;
-            MinCount = 0;
         }
     }
 }

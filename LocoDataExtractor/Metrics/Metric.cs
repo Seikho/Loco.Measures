@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace LocoDataExtractor.Metrics
 {
@@ -20,6 +21,7 @@ namespace LocoDataExtractor.Metrics
         public List<string> Output = new List<string>();
         public string OutputFile { get; set; }
         public StreamWriter Writer;
+        public Strategy.Strategy Strategy { get; set; }
 
         protected Metric(string targetFile, int samplesPerMinute, int minutesPerBin = 5)
         {
@@ -43,6 +45,7 @@ namespace LocoDataExtractor.Metrics
             {
                 UpdateValues(read);
                 Execute();
+                if (BinChange()) WriteLine();
             }
             Writer.Dispose();
         }
@@ -86,7 +89,6 @@ namespace LocoDataExtractor.Metrics
 
         protected void UpdateValues(string input)
         {
-            if (BinChange()) MinCount = 0;
             MinCount++; // when it this figure reaches binSize * 60, new bin is expected.
             Pred = Succ;
             PredNoRear = SuccNoRear;
@@ -107,9 +109,19 @@ namespace LocoDataExtractor.Metrics
             }
         }
 
-        protected void WriteLine(double val)
+        protected bool IsRearing()
         {
-            Writer.WriteLine(BinCount + "\t" + val + "\t\t(Samples: " + MinCount + ")");
+            return Succ.Length == 8 && Succ.Substring(7, 1).Equals("1");
+        }
+
+        protected void WriteLine()
+        {
+            Output.Add(Strategy.Process(Counter));
+            var value = Output.Last();
+            Writer.WriteLine(BinCount + "\t" + value + "\t\t(Samples: " + MinCount + ")");
+            Counter = 0;
+            MinCount = 0;
+            BinCount++;
         }
     }
 }

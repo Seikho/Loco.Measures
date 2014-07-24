@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+﻿using LocoDataExtractor.Metrics.Strategy;
 
 namespace LocoDataExtractor.Metrics
 {
@@ -7,6 +7,7 @@ namespace LocoDataExtractor.Metrics
         public MovementWhileVertical(string targetFile, int samplesPerMinute, int minutesPerBin)
             : base(targetFile, samplesPerMinute, minutesPerBin)
         {
+            Strategy = new CountStrategy();
             Writer.WriteLine("Vertical Time");
             Writer.WriteLine("Bin#\tVT(secs)\tBin timespan\t(MWV = (VerticalCount / SampleFreq), Samples per minute: " + SamplesPerMinute + ", Minutes per bin: " + MinutesPerBin);
         }
@@ -18,11 +19,6 @@ namespace LocoDataExtractor.Metrics
             var predHorz = Pred.Substring(0, Pred.Length - 1);
             var succHorz = Succ.Substring(0, Succ.Length - 1);
             if (predRear.Equals("1") && succRear.Equals("1") && !predHorz.Equals(succHorz)) Counter++;
-            if (!BinChange()) return;
-            Output.Add(Counter.ToString(CultureInfo.InvariantCulture));
-            WriteLine(Counter);
-            BinCount++;
-            Counter = 0;
         }
     }
 }

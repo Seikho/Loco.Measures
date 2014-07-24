@@ -52,6 +52,10 @@
     <Compile Include="Metrics\HorizontalMovement.cs" />
     <Compile Include="Metrics\ImmobileTime.cs" />
     <Compile Include="Metrics\MovementWhileVertical.cs" />
+    <Compile Include="Metrics\RepetitiousMovement.cs" />
+    <Compile Include="Metrics\Strategy\CountStrategy.cs" />
+    <Compile Include="Metrics\Strategy\Strategy.cs" />
+    <Compile Include="Metrics\Strategy\TimeStrategy.cs" />
     <Compile Include="Metrics\VerticalTime.cs" />
     <Compile Include="LocoAnalyser.cs" />
     <Compile Include="LocoExtractor.cs">

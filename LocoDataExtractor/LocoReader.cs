@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System.Windows.Forms.VisualStyles;
 using LocoDataExtractor.Metrics;
 using LocoDataExtractor.Processors;
 
@@ -50,6 +51,7 @@ namespace LocoDataExtractor
             GenerateMetric(new VerticalTime(Filename, SamplesPerMinute, MinutesPerBin));
             GenerateMetric(new CenterVertical(Filename, SamplesPerMinute, MinutesPerBin));
             GenerateMetric(new MovementWhileVertical(Filename, SamplesPerMinute, MinutesPerBin));
+            GenerateMetric(new RepetitiousMovement(Filename, SamplesPerMinute, MinutesPerBin));
         }
 
         public void GenerateMetric(Metric metric)

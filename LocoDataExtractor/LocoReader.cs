@@ -69,10 +69,10 @@ namespace LocoDataExtractor
             }
             using (var sw = new StreamWriter(OutputFile))
             {
-                sw.WriteLine("Rat ID,Bin#,Drug,Session#,HM,IMT,VM,VT,CV,MWV");
+                sw.WriteLine("Rat ID,Bin#,Drug,Session#,HM,IMT,VM,VT,CV,MWV,RM");
                 for (var count = 0; count < allLen; count++)
                 {
-                    var newLine = String.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}", 
+                    var newLine = String.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}", 
                         ratId,
                         count+1,
                         drug,
@@ -82,7 +82,8 @@ namespace LocoDataExtractor
                         MetricOutput[2].ElementAt(count),
                         MetricOutput[3].ElementAt(count),
                         MetricOutput[4].ElementAt(count),
-                        MetricOutput[5].ElementAt(count));
+                        MetricOutput[5].ElementAt(count),
+                        MetricOutput[6].ElementAt(count));
                     sw.WriteLine(newLine);
                 }
             }

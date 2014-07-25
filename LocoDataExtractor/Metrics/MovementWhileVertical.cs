@@ -8,8 +8,8 @@ namespace LocoDataExtractor.Metrics
             : base(targetFile, samplesPerMinute, minutesPerBin)
         {
             Strategy = new CountStrategy();
-            Writer.WriteLine("Vertical Time");
-            Writer.WriteLine("Bin#\tVT(secs)\tBin timespan\t(MWV = (VerticalCount / SampleFreq), Samples per minute: " + SamplesPerMinute + ", Minutes per bin: " + MinutesPerBin);
+            Writer.WriteLine("Movement While Vertical");
+            Writer.WriteLine("Bin#\tVT(secs)\tBin timespan\t, Samples per minute: " + SamplesPerMinute + ", Minutes per bin: " + MinutesPerBin);
         }
 
         public override void Execute()

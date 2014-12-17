@@ -1,7 +1,7 @@
-Loco.Metrics
+Loco.Measures
 =================
 
-Locomotor Activity Enclosure: Metric Extraction by Carl Winkler
+Locomotor Activity Enclosure: Measure Extraction by Carl Winkler
 
 This source code is compiled using .Net 4 Framework. The software provided is intended to work with the Locomotor Activity Enclosure system in conjuction with other software and hardware to record to data/output.
 
